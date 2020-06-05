@@ -3,42 +3,42 @@ const { Schema } = mongoose;
 
 const userSchema = new Schema({
   firstName: {
-      type: String,
-      required: true,
-      trim: true,
-      default: ''
+    type: String,
+    required: true,
+    trim: true,
+    default: ''
   },
   lastName: {
-      type: String,
-      required: true,
-      trim: true,
-      default: ''
+    type: String,
+    required: true,
+    trim: true,
+    default: ''
   },
   email: {
-      type: String,
-      required: true,
-      unique: true,
-      trim: true,
-      minlength: 5,
-      default: ''
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    minlength: 5,
+    default: ''
   },
   password: {
-      type: String,
-      required: true,
-      minlength: 8,
-      default: ''
+    type: String,
+    required: true,
+    minlength: 8,
+    default: ''
   },
   credibility: {
-      type: Number,
-      default: 0
+    type: Number,
+    default: 0
   },
   createdAt: {
-      type: Date,
-      default: Date.now
+    type: Date,
+    default: Date.now
   },
   isDeleted: {
-      type: Boolean,
-      default: false
+    type: Boolean,
+    default: false
   },
   googleId: {
     type: String
@@ -55,22 +55,22 @@ userSchema.pre('save', function (next) {
   let user = this;
   if (!user.isModified('password')) return next();
   bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
+    if (err) return next(err);
+
+    bcrypt.hash(user.password, salt, function (err, hash) {
       if (err) return next(err);
 
-      bcrypt.hash(user.password, salt, function (err, hash) {
-          if (err) return next(err);
-
-          user.password = hash;
-          next();
-      });
+      user.password = hash;
+      next();
+    });
   });
 });
 
 userSchema.methods.comparePassword = function (candidatePassword, cb) {
   bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
-      if (err) return cb(err);
-      cb(null, isMatch);
+    if (err) return cb(err);
+    cb(null, isMatch);
   });
 };
 
-mongoose.model('users', userSchema)
+mongoose.model('User', userSchema);

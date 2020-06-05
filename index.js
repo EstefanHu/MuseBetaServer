@@ -2,14 +2,14 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-
-require('./models/User');
-
 const app = express();
-require('./routes/authRoutes');
 
+// MODEL IMPORTS
+require('./models/User');
+require('./models/Story');
+
+// MONGO CONNECTION
 const DB_CONNECTION = process.env.APP_DB || 'muse_beta';
-
 mongoose.connect(`mongodb://localhost/${DB_CONNECTION}`,
   {
     useNewUrlParser: true,
@@ -23,7 +23,47 @@ mongoose.connection.once('open', () => {
   console.log('Connection Error: ' + err);
 });
 
-require('dotenv').config()
+// SESSIONS WITH REDIS
+const session = require('express-session');
+const redis = require('redis');
+const RedisStore = require('connect-redis')(session)
+const redisClient = redis.createClient()
+const sessionStore = new RedisStore({
+  host: 'localhost',
+  port: 6379,
+  client: redisClient,
+  ttl: 260
+});
+app.use(session({
+  secret: process.env.SESSIONS_KEY || 'super-secret-sessions',
+  store: sessionStore,
+  saveUninitialized: false,
+  resave: false,
+  name: 'museCookie',
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24,
+    httpOnly: false,
+    sameSite: false,
+    secure: process.env.ENVIRONMENT === 'production'
+  }
+}));
+
+// MIDDLEWARE
+require('dotenv').config();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true,
+}));
+
+
+// ROUTES
+require('./routes/authRoutes');
+const userRouter = require('./routes/userRoutes.js');
+app.use('/user', userRouter);
+const storyRouter = require('./routes/storyRoutes.js');
+app.use('/story', storyRouter);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
