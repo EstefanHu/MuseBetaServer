@@ -40,8 +40,8 @@ router.post('/create', async (req, res) => {
     await story.save();
 
     res.json('Story Published');
-  } catch (error) {
-    res.status(500).json('Error: ' + error);
+  } catch (err) {
+    res.status(500).json({ err });
   }
 });
 
@@ -54,8 +54,8 @@ router.post('/create', async (req, res) => {
 //       .find({ community: req.params.community })
 //       .sort({ createdAt: 'desc' });
 //     res.json({ library, feed });
-//   } catch (error) {
-//     res.status(500).json('Error: ' + error);
+//   } catch (err) {
+//     res.status(500).json({ err })
 //   }
 // });
 
@@ -65,8 +65,8 @@ router.get('/library', async (req, res) => {
       .find({ authorId: req.session.userID })
       .sort({ createdAt: 'desc' });
     res.json({ "stories": stories });
-  } catch (error) {
-    res.status(500).json('Error: ' + error);
+  } catch (err) {
+    res.status(500).json({ err });
   }
 });
 
@@ -77,8 +77,8 @@ router.get('/community/:community', async (req, res) => {
       .sort({ createdAt: 'desc' });
 
     res.json({ "stories": stories });
-  } catch (error) {
-    res.status(500).json('Error: ' + error)
+  } catch (err) {
+    res.status(500).json({ err });
   }
 })
 
@@ -86,8 +86,8 @@ router.get('/:id', async (req, res) => {
   try {
     let story = await Story.findById(req.params.id);
     res.json(story);
-  } catch (error) {
-    res.type('text').status(500).send('Error: ' + error);
+  } catch (err) {
+    res.status(500).json({ err });
   }
 });
 
@@ -95,8 +95,8 @@ router.post('/delete/:id', async (req, res) => {
   try {
     await Story.findByIdAndDelete(req.params.id);
     res.send('Deleted Story');
-  } catch (error) {
-    res.type('text').status(500).send('Error: ' + error);
+  } catch (err) {
+    res.status(500).json({ err });
   }
 });
 
