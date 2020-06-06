@@ -53,7 +53,7 @@ router.post('/login', async (req, res) => {
 
 router.get('/mapKey', (req, res) => {
   try {
-
+    res.json({key: process.env.MAPBOX_ACCESS_TOKEN});
   } catch (err) {
     res.status(500).json({ err });
   }
