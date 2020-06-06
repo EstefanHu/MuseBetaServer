@@ -47,7 +47,7 @@ router.post('/login', async (req, res) => {
       res.json('Login successful');
     });
   } catch (err) {
-    res.status(500).json({ err };
+    res.status(500).json({ err });
   }
 });
 
@@ -55,7 +55,7 @@ router.get('/mapKey', (req, res) => {
   try {
 
   } catch (err) {
-    res.status(500).json({ err })
+    res.status(500).json({ err });
   }
 })
 

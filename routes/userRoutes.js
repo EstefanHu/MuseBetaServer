@@ -4,8 +4,8 @@ router.get('/profile', async (req, res) => {
   try {
     const user = await User.findById(req.session.userID);
     res.json(user);
-  } catch (error) {
-    res.status(500).json('error:  ' + error);
+  } catch (err) {
+    res.status(500).json({ err });
   }
 });
 
@@ -21,7 +21,7 @@ router.post('/update', async (req, res) => {
 
     if (check) {
       if (check._id != req.session.userID)
-        return res.json({ error: 'Email already in use' });
+        return res.json({ err: 'Email already in use' });
 
       await check.update({
         firstName,
@@ -39,8 +39,8 @@ router.post('/update', async (req, res) => {
     }
 
     res.json({ msg: 'Success' });
-  } catch (error) {
-    res.status(500).json('error:  ' + error);
+  } catch (err) {
+    res.status(500).json({ err });
   }
 });
 
@@ -58,15 +58,15 @@ router.post('/resecure', async (req, res) => {
 
         user.comparePassword(currentPassword, async function (err, isMatch) {
           if (err) throw err;
-          if (!isMatch) return res.json({ error: 'Your password was incorrect.' });
+          if (!isMatch) return res.json({ err: 'Your password was incorrect.' });
 
           user.password = newPassword;
           await user.save();
           res.json({ msg: 'password updated' });
         });
       });
-  } catch (error) {
-    res.status(500).json('error:  ' + error);
+  } catch (err) {
+    res.status(500).json({ err });
   }
 });
 
@@ -74,8 +74,8 @@ router.post('/delete/:id', async (req, res) => {
   try {
     await User.findByIdAndDelete(req.params.id);
     res.send('Deleted User');
-  } catch (error) {
-    res.status(500).json('error:  ' + error);
+  } catch (err) {
+    res.status(500).json({ err });
   }
 });
 
@@ -85,8 +85,8 @@ router.get('/logout', (req, res) => {
       if (err) throw err
     });
     res.json({ msg: 'User logged out.' });
-  } catch (error) {
-    res.status(500).json('error:  ' + error);
+  } catch (err) {
+    res.status(500).json({ err });
   }
 });
 
