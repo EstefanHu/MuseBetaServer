@@ -59,11 +59,9 @@ app.use(cors({
 
 
 // ROUTES
-require('./routes/authRoutes');
-const userRouter = require('./routes/userRoutes.js');
-app.use('/user', userRouter);
-const storyRouter = require('./routes/storyRoutes.js');
-app.use('/story', storyRouter);
+app.use('/auth', require('./routes/authRoutes'));
+app.use('/user', require('./routes/userRoutes'));
+app.use('/story', require('./routes/storyRoutes'));
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {

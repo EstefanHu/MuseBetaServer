@@ -23,8 +23,8 @@ router.post('/register', async (req, res) => {
 
     req.session.userID = user._id;
     res.json("Registration successful");
-  } catch (error) {
-    res.status(500).json('error: ' + error);
+  } catch (err) {
+    res.status(500).json({ err });
   }
 });
 
@@ -46,9 +46,17 @@ router.post('/login', async (req, res) => {
       req.session.userID = user._id;
       res.json('Login successful');
     });
-  } catch (error) {
-    res.status(500).json('error:  ' + error);
+  } catch (err) {
+    res.status(500).json({ err };
   }
 });
+
+router.get('/mapKey', (req, res) => {
+  try {
+
+  } catch (err) {
+    res.status(500).json({ err })
+  }
+})
 
 module.exports = router;
