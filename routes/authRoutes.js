@@ -41,7 +41,7 @@ router.post('/login', async (req, res) => {
 
     if (!user)
       return res.json({ error: 'Email or Password was incorrect' });
-
+    //TODO:TEST already writtin compare method
     //https://coderrocketfuel.com/article/using-bcrypt-to-hash-and-check-passwords-in-node-js
     await bcrypt.compare(password, user.password, async function (err, isMatch) {
       if (err) throw err;
@@ -83,12 +83,12 @@ router.post('/signin', async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(422).send({ error: 'Must provide email and password' });
+    return res.status(422).send({ err: 'Must provide email and password' });
   }
 
   const user = await User.findOne({ email });
   if (!user) {
-    return res.status(422).send({ error: 'Invalid password or email' });
+    return res.status(422).send({ err: 'Invalid password or email' });
   }
 
   try {
@@ -96,7 +96,7 @@ router.post('/signin', async (req, res) => {
     const token = jwt.sign({ userId: user._id }, 'MY_SECRET_KEY');
     res.send({ token });
   } catch (err) {
-    return res.status(422).send({ error: 'Invalid password or email' });
+    return res.status(422).send({ err: 'Invalid password or email' });
   }
 });
 

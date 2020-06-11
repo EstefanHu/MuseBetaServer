@@ -16,9 +16,9 @@ router.get('/', async (req, res) => {
 
 router.get('/story', async (req, res) => {
   try {
-    res.json({msg: 'Hello World'});
-  } catch (error) {
-    res.status(422).send({ error: error });
+    res.json({ msg: 'Hello World' });
+  } catch (err) {
+    res.status(422).send({ err });
   }
 })
 
