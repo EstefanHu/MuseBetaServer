@@ -7,7 +7,7 @@ const storySchema = new Schema({
     required: true,
     default: ''
   },
-  description: {
+  pitch: {
     type: String,
     required: true,
     default: ''
