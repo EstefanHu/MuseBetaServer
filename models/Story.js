@@ -7,12 +7,12 @@ const storySchema = new Schema({
     required: true,
     default: ''
   },
-  pitch: {
+  genre: {
     type: String,
     required: true,
     default: ''
   },
-  genre: {
+  pitch: {
     type: String,
     required: true,
     default: ''
