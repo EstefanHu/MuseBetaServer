@@ -57,6 +57,10 @@ app.use(cors({
   credentials: true,
 }));
 
+app.get('/', (req, res) => {
+  res.json({ msg: 'hello wolrd' });
+})
+
 
 // ROUTES
 app.use('/auth', require('./routes/authRoutes'));

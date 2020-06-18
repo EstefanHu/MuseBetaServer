@@ -5,7 +5,7 @@ router.post('/create', async (req, res) => {
     const {
       id,
       title,
-      description,
+      pitch,
       genre,
       longitude,
       latitude,
@@ -19,7 +19,7 @@ router.post('/create', async (req, res) => {
         { _id: id },
         {
           title: title,
-          description: description,
+          pitch: pitch,
           coordinates: [longitude, latitude],
           body: body,
         }
@@ -29,8 +29,8 @@ router.post('/create', async (req, res) => {
       const authorName = authorInfo.firstName + ' ' + authorInfo.lastName
       story = new Story();
       story.title = title;
-      story.description = description;
       story.genre = genre;
+      story.pitch = pitch;
       story.author = authorName;
       story.authorId = authorInfo._id;
       story.community = community;
@@ -41,7 +41,7 @@ router.post('/create', async (req, res) => {
 
     res.json('Story Published');
   } catch (err) {
-    res.status(500).json({ err });
+    res.status(500).json({ err: err });
   }
 });
 
