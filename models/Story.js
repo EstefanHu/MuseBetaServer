@@ -25,8 +25,12 @@ const storySchema = new Schema({
     type: String,
     default: ''
   },
-  coordinates: {
-    type: [Number],
+  longitude: {
+    type: Number,
+    required: true
+  },
+  latitude: {
+    type: Number,
     required: true
   },
   body: {
@@ -49,4 +53,4 @@ const storySchema = new Schema({
   timestamps: true
 });
 
-mongoose.model('Story', storySchema);
+module.exports = mongoose.model('Story', storySchema);

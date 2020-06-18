@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
+const bcrypt = require('bcryptjs');
+const SALT_WORK_FACTOR = 10;
 
 const userSchema = new Schema({
   firstName: {
@@ -73,4 +75,4 @@ userSchema.methods.comparePassword = function (candidatePassword, cb) {
   });
 };
 
-mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', userSchema);

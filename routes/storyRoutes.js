@@ -1,6 +1,40 @@
 const router = require('express').Router();
+const User = require('../models/User.js');
+const Story = require('../models/Story.js');
 
 router.post('/create', async (req, res) => {
+  console.log('Recieved Story --->');
+  try {
+    const {
+      title,
+      pitch,
+      genre,
+      longitude,
+      latitude,
+      community,
+      body
+    } = req.body;
+    const authorInfo = await User.findById(req.session.userID);
+    const authorName = authorInfo.firstName + ' ' + authorInfo.lastName
+    let story = new Story();
+    story.title = title;
+    story.genre = genre;
+    story.pitch = pitch;
+    story.author = authorName;
+    story.authorId = authorInfo._id;
+    story.community = community;
+    story.body = body;
+    story.longitude = longitude;
+    story.latitude = latitude;
+    await story.save();
+    res.status(201).json({_id: story._id});
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ err: err });
+  }
+});
+
+router.post('/update', async (req, res) => {
   try {
     const {
       id,
@@ -12,38 +46,20 @@ router.post('/create', async (req, res) => {
       community,
       body
     } = req.body;
-    let story;
-
-    if (id !== undefined) {
-      story = await Story.findByIdAndUpdate(
-        { _id: id },
-        {
-          title: title,
-          pitch: pitch,
-          coordinates: [longitude, latitude],
-          body: body,
-        }
-      );
-    } else {
-      const authorInfo = await User.findById(req.session.userID);
-      const authorName = authorInfo.firstName + ' ' + authorInfo.lastName
-      story = new Story();
-      story.title = title;
-      story.genre = genre;
-      story.pitch = pitch;
-      story.author = authorName;
-      story.authorId = authorInfo._id;
-      story.community = community;
-      story.body = body;
-      story.coordinates = [longitude, latitude];
-    }
-    await story.save();
-
-    res.json('Story Published');
+    let story = await Story.findByIdAndUpdate(
+      { _id: id },
+      {
+        title: title,
+        pitch: pitch,
+        coordinates: [longitude, latitude],
+        body: body,
+      }
+    );
+    await story.save(); //TODO: CHECK IF NEEDED
   } catch (err) {
     res.status(500).json({ err: err });
   }
-});
+})
 
 // router.get('/populate/:community', async (req, res) => {
 //   try {
