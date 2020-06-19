@@ -45,7 +45,7 @@ const storySchema = new Schema({
     type: String,
     required: true
   },
-  createdAt: {
+  publishedDate: {
     type: String,
     required: true,
   },
