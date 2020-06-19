@@ -12,7 +12,8 @@ router.post('/create', async (req, res) => {
       longitude,
       latitude,
       community,
-      body
+      body,
+      publishedDate,
     } = req.body;
     const authorInfo = await User.findById(req.session.userID);
     const authorName = authorInfo.firstName + ' ' + authorInfo.lastName
@@ -27,6 +28,7 @@ router.post('/create', async (req, res) => {
     story.longitude = longitude;
     story.latitude = latitude;
     story.publishedDate = publishedDate;
+    story.lastEditedAt = publishedDate;
     await story.save();
     res.status(201).json({ _id: story._id });
   } catch (err) {
@@ -44,7 +46,6 @@ router.post('/update', async (req, res) => {
       genre,
       longitude,
       latitude,
-      community,
       body
     } = req.body;
     let story = await Story.findByIdAndUpdate(
@@ -91,7 +92,7 @@ router.get('/community/:community', async (req, res) => {
   try {
     let stories = await Story
       .find({ community: req.params.community })
-      .sort({ createdAt: 'desc' });
+      .sort({ credibility: 'desc' });
 
     res.json({ "stories": stories });
   } catch (err) {

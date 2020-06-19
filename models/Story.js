@@ -49,6 +49,10 @@ const storySchema = new Schema({
     type: String,
     required: true,
   },
+  lastEditedAt: {
+    type: String,
+    required: true,
+  }
 }, {
   timestamps: true
 });
