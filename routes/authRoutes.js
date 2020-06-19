@@ -25,7 +25,7 @@ router.post('/register', async (req, res) => {
     user = await user.save();
 
     req.session.userID = user._id;
-    res.status(201).json({msg: 'Success'});
+    res.status(201).json({ msg: 'Success' });
   } catch (err) {
     console.log(err);
     res.status(500).json({ err });
@@ -57,7 +57,7 @@ router.post('/login', async (req, res) => {
 
 router.get('/mapKey', (req, res) => {
   try {
-    res.json({key: process.env.MAPBOX_ACCESS_TOKEN});
+    res.json({ key: process.env.MAPBOX_ACCESS_TOKEN });
   } catch (err) {
     res.status(500).json({ err });
   }

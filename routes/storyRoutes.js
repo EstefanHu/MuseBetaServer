@@ -27,7 +27,7 @@ router.post('/create', async (req, res) => {
     story.longitude = longitude;
     story.latitude = latitude;
     await story.save();
-    res.status(201).json({_id: story._id});
+    res.status(201).json({ _id: story._id });
   } catch (err) {
     console.log(err);
     res.status(500).json({ err: err });

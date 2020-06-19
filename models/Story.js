@@ -23,7 +23,7 @@ const storySchema = new Schema({
   },
   community: {
     type: String,
-    default: ''
+    required: true,
   },
   longitude: {
     type: Number,
@@ -46,8 +46,8 @@ const storySchema = new Schema({
     required: true
   },
   createdAt: {
-    type: Date,
-    default: Date.now
+    type: String,
+    required: true,
   },
 }, {
   timestamps: true
