@@ -3,7 +3,6 @@ const User = require('../models/User.js');
 const Story = require('../models/Story.js');
 
 router.post('/create', async (req, res) => {
-  console.log('Recieved Story --->');
   try {
     const {
       title,
