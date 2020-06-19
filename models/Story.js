@@ -45,14 +45,11 @@ const storySchema = new Schema({
     type: String,
     required: true
   },
-  publishedDate: {
-    type: String,
+  createdAt: {
+    type: Date,
+    default: Date.now(),
     required: true,
   },
-  lastEditedAt: {
-    type: String,
-    required: true,
-  }
 }, {
   timestamps: true
 });
