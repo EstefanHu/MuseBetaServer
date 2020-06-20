@@ -68,7 +68,4 @@ app.use('/user', require('./routes/userRoutes'));
 app.use('/story', require('./routes/storyRoutes'));
 app.use('/mobile', require('./routes/mobileRoutes'));
 
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-});
+module.exports = app;
