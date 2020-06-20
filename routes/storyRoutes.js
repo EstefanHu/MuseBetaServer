@@ -56,30 +56,3 @@ module.exports = router;
 //     res.status(500).json({ err: err });
 //   }
 // });
-
-router.post('/update', async (req, res) => {
-  try {
-    const {
-      id,
-      title,
-      pitch,
-      genre,
-      longitude,
-      latitude,
-      body
-    } = req.body;
-    let story = await Story.findByIdAndUpdate(
-      { _id: id },
-      {
-        title: title,
-        pitch: pitch,
-        coordinates: [longitude, latitude],
-        body: body,
-      }
-    );
-    await story.save(); //TODO: CHECK IF NEEDED
-  } catch (err) {
-    res.status(500).json({ err: err });
-  }
-});
-

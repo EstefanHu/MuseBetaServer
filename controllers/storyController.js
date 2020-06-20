@@ -36,6 +36,9 @@ exports.getPost = async (req, res) => {
 
 exports.updatePost = async (req, res) => {
   try {
+    const { _id, title, pitch, genre, longitude, latitude, body } = req.body;
+    let story = await Story.findByIdAndUpdate({ _id: _id }, { title, pitch, longitude, latitude, body });
+    await story.save(); 
     res.json({ status: 'success', payload: 0 });
   } catch (error) {
     res.status(500).json({ status: 'failure', payload: error });
