@@ -1,37 +1,61 @@
-const router = require('express').Router();
-const User = require('../models/User.js');
-const Story = require('../models/Story.js');
+const express = require('express');
+const storyController = require('../controllers/storyController.js');
+const router = express.Router();
 
-router.post('/create', async (req, res) => {
+router
+  .route('/')
+  .post(storyController.createPost);
+
+router
+  .route('/:id')
+  .get(storyController.getPost)
+  .patch(storyController.updatePost)
+  .delete(storyController.deletePost);
+
+router.get('/community/:community', async (req, res) => {
   try {
-    const {
-      title,
-      pitch,
-      genre,
-      longitude,
-      latitude,
-      community,
-      body,
-    } = req.body;
-    const authorInfo = await User.findById(req.session.userID);
-    const authorName = authorInfo.firstName + ' ' + authorInfo.lastName
-    let story = new Story();
-    story.title = title;
-    story.genre = genre;
-    story.pitch = pitch;
-    story.author = authorName;
-    story.authorId = authorInfo._id;
-    story.community = community;
-    story.body = body;
-    story.longitude = longitude;
-    story.latitude = latitude;
-    await story.save();
-    res.status(201).json({ _id: story._id });
+    let stories = await Story
+      .find({ community: req.params.community })
+      .sort({ credibility: 'desc' });
+
+    res.json({ "stories": stories });
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ err: err });
+    res.status(500).json({ err });
   }
 });
+
+module.exports = router;
+
+// router.post('/create', async (req, res) => {
+//   try {
+//     const {
+//       title,
+//       pitch,
+//       genre,
+//       longitude,
+//       latitude,
+//       community,
+//       body,
+//     } = req.body;
+//     const authorInfo = await User.findById(req.session.userID);
+//     const authorName = authorInfo.firstName + ' ' + authorInfo.lastName
+//     let story = new Story();
+//     story.title = title;
+//     story.genre = genre;
+//     story.pitch = pitch;
+//     story.author = authorName;
+//     story.authorId = authorInfo._id;
+//     story.community = community;
+//     story.body = body;
+//     story.longitude = longitude;
+//     story.latitude = latitude;
+//     await story.save();
+//     res.status(201).json({ _id: story._id });
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).json({ err: err });
+//   }
+// });
 
 router.post('/update', async (req, res) => {
   try {
@@ -59,59 +83,3 @@ router.post('/update', async (req, res) => {
   }
 });
 
-// router.get('/populate/:community', async (req, res) => {
-//   try {
-//     let library = await Entry
-//       .find({ authorId: req.session.userID })
-//       .sort({ createAt: 'desc' });
-//     let feed = await Entry
-//       .find({ community: req.params.community })
-//       .sort({ createdAt: 'desc' });
-//     res.json({ library, feed });
-//   } catch (err) {
-//     res.status(500).json({ err })
-//   }
-// });
-
-router.get('/library', async (req, res) => {
-  try {
-    let stories = await Story
-      .find({ authorId: req.session.userID })
-      .sort({ createdAt: 'desc' });
-    res.json({ "stories": stories });
-  } catch (err) {
-    res.status(500).json({ err });
-  }
-});
-
-router.get('/community/:community', async (req, res) => {
-  try {
-    let stories = await Story
-      .find({ community: req.params.community })
-      .sort({ credibility: 'desc' });
-
-    res.json({ "stories": stories });
-  } catch (err) {
-    res.status(500).json({ err });
-  }
-})
-
-router.get('/:id', async (req, res) => {
-  try {
-    let story = await Story.findById(req.params.id);
-    res.json(story);
-  } catch (err) {
-    res.status(500).json({ err });
-  }
-});
-
-router.post('/delete/:id', async (req, res) => {
-  try {
-    await Story.findByIdAndDelete(req.params.id);
-    res.send('Deleted Story');
-  } catch (err) {
-    res.status(500).json({ err });
-  }
-});
-
-module.exports = router;
