@@ -1,7 +1,19 @@
 const User = require('../models/User.js');
 const Story = require('../models/Story.js');
 
-exports.createPost = async (req, res) => {
+exports.getCommunityStories = async (req, res) => {
+  try {
+    let stories = await Story
+      .find({ community: req.params.community })
+      .sort({ credibility: 'desc' });
+
+    res.status(200).json({ status: 'success', payload: stories });
+  } catch (error) {
+    res.status(500).json({ status: 'failure', payload: error });
+  }
+}
+
+exports.createStory = async (req, res) => {
   try {
     const { title, pitch, genre, longitude, latitude, community, body } = req.body;
     const authorInfo = await User.findById(req.session.userID);
@@ -24,7 +36,7 @@ exports.createPost = async (req, res) => {
   }
 };
 
-exports.getPost = async (req, res) => {
+exports.getStory = async (req, res) => {
   try {
     let story = await Story.findById(req.params.id);
     res.json({ status: 'success', payload: story });
@@ -34,18 +46,18 @@ exports.getPost = async (req, res) => {
   }
 };
 
-exports.updatePost = async (req, res) => {
+exports.updateStory = async (req, res) => {
   try {
     const { _id, title, pitch, genre, longitude, latitude, body } = req.body;
     let story = await Story.findByIdAndUpdate({ _id: _id }, { title, pitch, longitude, latitude, body });
-    await story.save(); 
+    await story.save();
     res.json({ status: 'success', payload: 0 });
   } catch (error) {
     res.status(500).json({ status: 'failure', payload: error });
   }
 }
 
-exports.deletePost = async (req, res) => {
+exports.deleteStory = async (req, res) => {
   try {
     await Story.findByIdAndDelete(req.params.id);
     res.status(200).json({ status: 'success', payload: req.params.id });
