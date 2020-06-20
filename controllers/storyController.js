@@ -1,18 +1,6 @@
 const User = require('../models/User.js');
 const Story = require('../models/Story.js');
 
-exports.getCommunityStories = async (req, res) => {
-  try {
-    let stories = await Story
-      .find({ community: req.params.community })
-      .sort({ credibility: 'desc' });
-
-    res.status(200).json({ status: 'success', payload: stories });
-  } catch (error) {
-    res.status(500).json({ status: 'failure', payload: error });
-  }
-}
-
 exports.createStory = async (req, res) => {
   try {
     const { title, pitch, genre, longitude, latitude, community, body } = req.body;
@@ -65,3 +53,15 @@ exports.deleteStory = async (req, res) => {
     res.status(500).json({ status: 'failure', payload: error });
   }
 };
+
+exports.getCommunityStories = async (req, res) => {
+  try {
+    let stories = await Story
+      .find({ community: req.params.community })
+      .sort({ credibility: 'desc' });
+
+    res.status(200).json({ status: 'success', payload: stories });
+  } catch (error) {
+    res.status(500).json({ status: 'failure', payload: error });
+  }
+}

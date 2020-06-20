@@ -3,8 +3,7 @@ const storyController = require('../controllers/storyController.js');
 const router = express.Router();
 
 router
-  .route('/:community?')
-  .get(storyController.getCommunityStories)
+  .route('/')
   .post(storyController.createStory);
 
 router
@@ -12,5 +11,9 @@ router
   .get(storyController.getStory)
   .patch(storyController.updateStory)
   .delete(storyController.deleteStory);
+
+router
+  .route('/community/:community')
+  .get(storyController.getCommunityStories);
 
 module.exports = router;
