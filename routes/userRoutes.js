@@ -15,39 +15,39 @@ router
 
 module.exports = router;
 
-router.post('/resecure', async (req, res) => {
-  try {
-    const {
-      currentPassword,
-      newPassword
-    } = req.body;
+// router.post('/resecure', async (req, res) => {
+//   try {
+//     const {
+//       currentPassword,
+//       newPassword
+//     } = req.body;
 
-    await User.findById(
-      req.session.userID,
-      function (err, user) {
-        if (err) throw err;
+//     await User.findById(
+//       req.session.userID,
+//       function (err, user) {
+//         if (err) throw err;
 
-        user.comparePassword(currentPassword, async function (err, isMatch) {
-          if (err) throw err;
-          if (!isMatch) return res.json({ err: 'Your password was incorrect.' });
+//         user.comparePassword(currentPassword, async function (err, isMatch) {
+//           if (err) throw err;
+//           if (!isMatch) return res.json({ err: 'Your password was incorrect.' });
 
-          user.password = newPassword;
-          await user.save();
-          res.json({ msg: 'password updated' });
-        });
-      });
-  } catch (err) {
-    res.status(500).json({ err });
-  }
-});
+//           user.password = newPassword;
+//           await user.save();
+//           res.json({ msg: 'password updated' });
+//         });
+//       });
+//   } catch (err) {
+//     res.status(500).json({ err });
+//   }
+// });
 
-router.get('/logout', (req, res) => {
-  try {
-    req.session.destroy(err => {
-      if (err) throw err
-    });
-    res.json({ msg: 'User logged out.' });
-  } catch (err) {
-    res.status(500).json({ err });
-  }
-});
+// router.get('/logout', (req, res) => {
+//   try {
+//     req.session.destroy(err => {
+//       if (err) throw err
+//     });
+//     res.json({ msg: 'User logged out.' });
+//   } catch (err) {
+//     res.status(500).json({ err });
+//   }
+// });
