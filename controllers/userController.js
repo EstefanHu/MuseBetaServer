@@ -32,8 +32,8 @@ exports.createUser = async (req, res) => {
     user.password = password;
     user = await user.save();
 
-    req.session.userId = user._id;
-    res.status(201).json({ status: 'success' })
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_KEY);
+    res.status(201).json({ status: 'success', payload: token })
   } catch (error) {
     res.status(500).json({ status: 'failure', payload: error });
   }
