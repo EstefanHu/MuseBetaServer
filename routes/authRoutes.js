@@ -1,36 +1,6 @@
-const router = require('express').Router();
-const bcrypt = require('bcryptjs');
-const mongoose = require('mongoose');
-const jwt = require('jsonwebtoken');
-const User = mongoose.model('User');
-
-router.post('/register', async (req, res) => {
-  try {
-    const {
-      firstName,
-      lastName,
-      email,
-      password,
-    } = req.body;
-
-    let checkIfUserExist = await User.findOne({ email: email });
-    if (checkIfUserExist) return res.json({ 'error': 'Email already in use' });
-    if (password < 8) return res.json({ 'error': 'Password is not long enough' });
-
-    let user = new User();
-    user.firstName = firstName;
-    user.lastName = lastName;
-    user.email = email;
-    user.password = password;
-    user = await user.save();
-
-    req.session.userID = user._id;
-    res.status(201).json({ msg: 'Success' });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ err });
-  }
-});
+const express = require('express');
+const authController = require('../controllers/authController.js');
+const router = express.Router();
 
 router.post('/login', async (req, res) => {
   try {
@@ -47,7 +17,7 @@ router.post('/login', async (req, res) => {
     await bcrypt.compare(password, user.password, async function (err, isMatch) {
       if (err) throw err;
       if (!isMatch) return res.json({ error: 'Email or Password was incorrect' });
-      req.session.userID = user._id;
+      req.session.userId = user._id;
       res.json('Login successful');
     });
   } catch (err) {

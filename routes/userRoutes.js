@@ -1,48 +1,19 @@
-const router = require('express').Router();
+const express = require('express');
+const userController = require('../controllers/userController.js');
+const router = express.Router();
 
-router.get('/profile', async (req, res) => {
-  try {
-    const user = await User.findById(req.session.userID);
-    res.json(user);
-  } catch (err) {
-    res.status(500).json({ err });
-  }
-});
+router
+  .route('/')
+  .get(userController.getUser)
+  .post(userController.createUser)
+  .patch(userController.updateUser)
+  .delete(userController.deleteUser);
 
-router.post('/update', async (req, res) => {
-  try {
-    const {
-      firstName,
-      lastName,
-      email
-    } = req.body;
+router
+  .route('/:id')
+  .get(userController.getUser)
 
-    let check = await User.findOne({ email });
-
-    if (check) {
-      if (check._id != req.session.userID)
-        return res.json({ err: 'Email already in use' });
-
-      await check.update({
-        firstName,
-        lastName
-      });
-    } else {
-      await User.findByIdAndUpdate(
-        { _id: req.session.userID },
-        {
-          firstName,
-          lastName,
-          email
-        }
-      );
-    }
-
-    res.json({ msg: 'Success' });
-  } catch (err) {
-    res.status(500).json({ err });
-  }
-});
+module.exports = router;
 
 router.post('/resecure', async (req, res) => {
   try {
@@ -70,15 +41,6 @@ router.post('/resecure', async (req, res) => {
   }
 });
 
-router.post('/delete/:id', async (req, res) => {
-  try {
-    await User.findByIdAndDelete(req.params.id);
-    res.send('Deleted User');
-  } catch (err) {
-    res.status(500).json({ err });
-  }
-});
-
 router.get('/logout', (req, res) => {
   try {
     req.session.destroy(err => {
@@ -89,5 +51,3 @@ router.get('/logout', (req, res) => {
     res.status(500).json({ err });
   }
 });
-
-module.exports = router;
