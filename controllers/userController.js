@@ -1,14 +1,14 @@
-const jwt = require('jsonwebtoken');
 const User = require('../models/User.js');
 
 exports.getUser = async (req, res) => {
   try {
     const id = req.params.id;
     let user;
-    id ? user = await User.findById(req.params.id)
-      : user = await User.findById(req.sessions.userId);
+    id ? user = await User.findById(id)
+      : user = await User.findById(req.userId);
     res.status(200).json({ status: 'success', payload: user });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ status: 'failure', payload: error });
   }
 }

@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
   // authorization === 'Bearer laksjdflaksdjasdfklj'
 
   if (!authorization)
-    return res.status(401).send({
+    return res.status(401).json({
       status: 'failure',
       payload: 'You must be logged in.'
     });
@@ -15,15 +15,13 @@ module.exports = (req, res, next) => {
   const token = authorization.replace('Bearer ', '');
   jwt.verify(token, process.env.JWT_KEY, async (err, payload) => {
     if (err)
-      return res.status(401).send({
+      return res.status(401).json({
         status: 'failure',
         payload: 'You must be logged in.'
       });
 
     const { userId } = payload;
-
-    const user = await User.findById(userId);
-    req.user = user;
+    req.userId = userId;
     next();
   });
 };
