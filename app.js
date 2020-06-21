@@ -65,6 +65,5 @@ app.get('/', (req, res) => {
 app.use('/auth', require('./routes/authRoutes'));
 app.use('/user', require('./routes/userRoutes'));
 app.use('/story', require('./routes/storyRoutes'));
-app.use('/mobile', require('./routes/mobileRoutes'));
 
 module.exports = app;

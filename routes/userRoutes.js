@@ -1,6 +1,9 @@
 const express = require('express');
 const userController = require('../controllers/userController.js');
+const requireAuth = require('../middlewares/requireAuth.js');
 const router = express.Router();
+
+router.use(requireAuth);
 
 router
   .route('/')
