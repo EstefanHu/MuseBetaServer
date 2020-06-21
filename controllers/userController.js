@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const User = require('../models/User.js');
 
 exports.getUser = async (req, res) => {
@@ -21,9 +22,17 @@ exports.createUser = async (req, res) => {
       password,
     } = req.body;
 
-    let checkIfUserExist = await User.findOne({ email: email });
-    if (checkIfUserExist) return res.json({ 'error': 'Email already in use' });
-    if (password < 8) return res.json({ 'error': 'Password is not long enough' });
+    let checkIfUserExist = await User.findOne({ email });
+    if (checkIfUserExist)
+      return res.status(422).json({
+        status: 'failure',
+        error: 'Email already in use'
+      });
+    if (password < 8)
+      return res.status(422).json({
+        status: 'failure',
+        error: 'Password is not long enough'
+      });
 
     let user = new User();
     user.firstName = firstName;
