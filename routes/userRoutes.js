@@ -8,7 +8,6 @@ router.use(requireAuth);
 router
   .route('/')
   .get(userController.getUser)
-  .post(userController.createUser)
   .patch(userController.updateUser)
   .delete(userController.deleteUser);
 

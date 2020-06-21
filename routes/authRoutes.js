@@ -4,7 +4,7 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(authController.getAuthorization)
-  .post(authController.login)
+  // .get(authController.getAuthorization)
+  .post(authController.getAuthorized)
 
 module.exports = router;

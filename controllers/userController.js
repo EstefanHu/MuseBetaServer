@@ -13,41 +13,6 @@ exports.getUser = async (req, res) => {
   }
 }
 
-exports.createUser = async (req, res) => {
-  try {
-    const {
-      firstName,
-      lastName,
-      email,
-      password,
-    } = req.body;
-
-    let checkIfUserExist = await User.findOne({ email });
-    if (checkIfUserExist)
-      return res.status(422).json({
-        status: 'failure',
-        error: 'Email already in use'
-      });
-    if (password < 8)
-      return res.status(422).json({
-        status: 'failure',
-        error: 'Password is not long enough'
-      });
-
-    let user = new User();
-    user.firstName = firstName;
-    user.lastName = lastName;
-    user.email = email;
-    user.password = password;
-    user = await user.save();
-
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_KEY);
-    res.status(201).json({ status: 'success', payload: token })
-  } catch (error) {
-    res.status(500).json({ status: 'failure', payload: error });
-  }
-}
-
 exports.updateUser = async (req, res) => {
   try {
     const { firstName, lastName, email } = req.body;
