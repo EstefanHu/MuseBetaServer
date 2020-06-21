@@ -1,6 +1,9 @@
 const express = require('express');
 const storyController = require('../controllers/storyController.js');
+const requireAuth = require('../middlewares/requireAuth');
 const router = express.Router();
+
+router.use(requireAuth);
 
 router
   .route('/')
