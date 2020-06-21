@@ -14,7 +14,7 @@ exports.getAuthorized = async (req, res) => {
         payload: response.payload
       });
 
-    const token = jwt.sign({ userId: response.payload }, process.env.JWT_KEY);
+    const token = jwt.sign({ userId: response.payload }, process.env.JWT_KEY, {expiresIn: '1d'});
     res.status(response.status).json({ status: 'success', payload: token });
   } catch (error) {
     res.status(500).json({ status: 'failure', payload: error });
