@@ -46,7 +46,7 @@ exports.updateUser = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
   try {
-    await User.findByIdAndDelete(req.session.userId);
+    await User.findByIdAndDelete(req.userId);
     res.status(200).json({ status: 'success' });
   } catch (error) {
     res.status(500).json({ status: 'failure', payload: error });

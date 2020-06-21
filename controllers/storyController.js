@@ -4,7 +4,7 @@ const Story = require('../models/Story.js');
 exports.createStory = async (req, res) => {
   try {
     const { title, pitch, genre, longitude, latitude, community, body } = req.body;
-    const authorInfo = await User.findById(req.session.userID); 
+    const authorInfo = await User.findById(req.userId); 
     const authorName = authorInfo.firstName + ' ' + authorInfo.lastName
     let story = new Story();
     story.title = title;
