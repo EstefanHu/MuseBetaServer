@@ -66,7 +66,7 @@ const storySchema = new Schema({
     type: Number,
     default: 0
   },
-  numOfRatings: {
+  ratingsQuantity: {
     type: Number,
     default: 0
   },

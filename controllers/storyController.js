@@ -88,6 +88,7 @@ exports.getStoryMeta = async (req, res) => {
       {
         $group: {
           _id: null,
+          numRatings: {$sum: '$ratingsQuantity'},
           avgRating: { $avg: '$ratingsAverage' },
           avgDuration: { $avg: '$duration' },
           minDuration: { $min: '$duration' },
