@@ -2,9 +2,16 @@ const User = require('../models/User.js');
 const Story = require('../models/Story.js');
 const e = require('express');
 
+exports.getPublicLore = async (req, _, next) => {
+  req.query.limit = '5';
+  req.query.sort = 'credibilty';
+  req.query.status = 'lore';
+  req.query.fields = 'title,genre,pitch,body,longitude,latitude';
+  next();
+}
+
 exports.getStories = async (req, res) => {
   try {
-    // const { community, status, } = req.query;
     const queryObj = { ...req.query }
     const excludedFields = ['page', 'sort', 'limit', 'fields'];
     excludedFields.forEach(el => delete queryObj[el]);

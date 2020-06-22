@@ -3,6 +3,12 @@ const storyController = require('../controllers/storyController.js');
 const requireAuth = require('../middlewares/requireAuth');
 const router = express.Router();
 
+router.route('/public-lore')
+  .get(storyController.getPublicLore, storyController.getStories);
+
+// ==============
+// PRIVATE ROUTES
+// ==============
 router.use(requireAuth);
 
 router
