@@ -7,6 +7,7 @@ router.use(requireAuth);
 
 router
   .route('/')
+  .get(storyController.getStories)
   .post(storyController.createStory);
 
 router
@@ -14,9 +15,5 @@ router
   .get(storyController.getStory)
   .patch(storyController.updateStory)
   .delete(storyController.deleteStory);
-
-router
-  .route('/community/:community')
-  .get(storyController.getCommunityStories);
 
 module.exports = router;
