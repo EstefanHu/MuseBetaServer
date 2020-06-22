@@ -81,7 +81,7 @@ exports.deleteStory = async (req, res) => {
 
 exports.getStoryMeta = async (req, res) => {
   try {
-    const meta = Story.aggregate([
+    const meta = await Story.aggregate([
       {
         $match: { ratingsAverage: { $gte: 4.5 } }
       },
@@ -96,6 +96,7 @@ exports.getStoryMeta = async (req, res) => {
       }
     ]);
 
+    res.status(200).json({ status: 'success', payload: meta });
   } catch (error) {
     res.status(404).json({ status: 'failure', payload: error });
   }

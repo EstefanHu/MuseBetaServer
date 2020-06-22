@@ -6,6 +6,8 @@ const router = express.Router();
 router.route('/public-lore')
   .get(storyController.getPublicLore, storyController.getStories);
 
+router.route('/story-meta').get(storyController.getStoryMeta);
+
 // ==============
 // PRIVATE ROUTES
 // ==============
