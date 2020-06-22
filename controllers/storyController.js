@@ -32,10 +32,12 @@ exports.getStory = async (req, res) => {
 
 exports.updateStory = async (req, res) => {
   try {
-    const { _id, title, pitch, genre, longitude, latitude, body } = req.body;
-    let story = await Story.findByIdAndUpdate({ _id: _id }, { title, pitch, longitude, latitude, body });
+    let story = await Story.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true
+    });
     await story.save();
-    res.json({ status: 'success', payload: 0 });
+    res.json({ status: 'success', payload: story });
   } catch (error) {
     res.status(500).json({ status: 'failure', payload: error });
   }
