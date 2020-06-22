@@ -1,4 +1,4 @@
-module.export = class APIFeatures {
+module.exports = class APIFeatures {
   constructor(query, queryString) {
     this.query = query;
     this.queryString = queryString;
