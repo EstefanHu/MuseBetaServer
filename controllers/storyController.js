@@ -56,7 +56,7 @@ exports.getCommunityStories = async (req, res) => {
       .find({ community: req.params.community })
       .sort({ credibility: 'desc' });
 
-    res.status(200).json({ status: 'success', payload: stories });
+    res.status(200).json({ status: 'success', results: stories.length, payload: stories });
   } catch (error) {
     res.status(500).json({ status: 'failure', payload: error });
   }
