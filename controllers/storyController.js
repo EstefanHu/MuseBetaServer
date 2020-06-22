@@ -9,7 +9,13 @@ exports.getStories = async (req, res) => {
     const excludedFields = ['page', 'sort', 'limit', 'fields'];
     excludedFields.forEach(el => delete queryObj[el]);
 
-    let stories = await Story.find(queryObj);
+    let query = Story.find(queryObj);
+
+    req.query.sort ?
+      query = query.sort(req.query.sort.split(',').join(' '))
+      : query = query.sort('credibility');
+
+    const stories = await query;
 
     res.status(200).json({ status: 'success', results: stories.length, payload: stories });
   } catch (error) {
