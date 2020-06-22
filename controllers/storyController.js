@@ -19,10 +19,22 @@ exports.getStories = async (req, res) => {
       query = query.select(req.query.fields.split(',').join(' '))
       : query = query.select('-__v -updatedAt');
 
+    const page = req.query.page * 1 || 1;
+    const limit = req.query.limit * 1 || 20;
+    const skip = (page - 1) * limit;
+
+    query = query.skip(skip).limit(limit);
+
+    if (req.query.page) {
+      const numStories = await Story.countDocuments();
+      if (skip >= numStories) throw new Error('This page does not exist');
+    }
+
     const stories = await query;
 
     res.status(200).json({ status: 'success', results: stories.length, payload: stories });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ status: 'failure', payload: error });
   }
 }
