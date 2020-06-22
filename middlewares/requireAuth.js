@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 module.exports = (req, res, next) => {
   const { authorization } = req.headers;
   // authorization === 'Bearer laksjdflaksdjasdfklj'
-
   if (!authorization)
     return res.status(401).json({
       status: 'failure',
