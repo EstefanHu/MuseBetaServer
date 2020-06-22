@@ -7,10 +7,6 @@ const storySchema = new Schema({
     required: true,
     default: ''
   },
-  status: {
-    type: String,
-    default: 'Rumor'
-  },
   genre: {
     type: String,
     required: true,
@@ -20,10 +16,6 @@ const storySchema = new Schema({
     type: String,
     required: true,
     default: ''
-  },
-  credibility: {
-    type: Number,
-    default: 0
   },
   community: {
     type: String,
@@ -54,6 +46,26 @@ const storySchema = new Schema({
     default: Date.now(),
     required: true,
   },
+  status: {
+    type: String,
+    default: 'Rumor'
+  },
+  credibility: {
+    type: Number,
+    default: 0
+  },
+  numOfRatings: {
+    type: Number,
+    default: 0
+  },
+  ratingsAverage: {
+    type: Number,
+    default: null
+  },
+  duration: {
+    type: Number,
+    default: null
+  }
 }, {
   timestamps: true
 });

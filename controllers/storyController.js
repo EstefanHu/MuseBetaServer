@@ -22,7 +22,7 @@ exports.getStories = async (req, res) => {
     res.status(200).json({ status: 'success', results: stories.length, payload: stories });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ status: 'failure', payload: error });
+    res.status(404).json({ status: 'failure', payload: error });
   }
 }
 
@@ -41,7 +41,7 @@ exports.createStory = async (req, res) => {
     res.status(201).json({ status: 'success', payload: response });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ status: 'failure', payload: error });
+    res.status(404).json({ status: 'failure', payload: error });
   }
 };
 
@@ -51,7 +51,7 @@ exports.getStory = async (req, res) => {
     res.json({ status: 'success', payload: story });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ status: 'failure', payload: error });
+    res.status(404).json({ status: 'failure', payload: error });
   }
 };
 
@@ -66,7 +66,7 @@ exports.updateStory = async (req, res) => {
     });
     res.status(200).json({ status: 'success', payload: story });
   } catch (error) {
-    res.status(500).json({ status: 'failure', payload: error });
+    res.status(404).json({ status: 'failure', payload: error });
   }
 }
 
@@ -75,6 +75,28 @@ exports.deleteStory = async (req, res) => {
     await Story.deleteOne({ _id: req.params.id, authorId: req.userId });
     res.status(204).send();
   } catch (error) {
-    res.status(500).json({ status: 'failure', payload: error });
+    res.status(404).json({ status: 'failure', payload: error });
   }
 };
+
+exports.getStoryMeta = async (req, res) => {
+  try {
+    const meta = Story.aggregate([
+      {
+        $match: { ratingsAverage: { $gte: 4.5 } }
+      },
+      {
+        $group: {
+          _id: null,
+          avgRating: { $avg: '$ratingsAverage' },
+          avgDuration: { $avg: '$duration' },
+          minDuration: { $min: '$duration' },
+          maxDuration: { $max: '$duration' }
+        }
+      }
+    ]);
+
+  } catch (error) {
+    res.status(404).json({ status: 'failure', payload: error });
+  }
+}
