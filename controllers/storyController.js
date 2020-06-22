@@ -38,7 +38,7 @@ exports.updateStory = async (req, res) => {
       runValidators: true
     });
     await story.save();
-    res.json({ status: 'success', payload: story });
+    res.status(200).json({ status: 'success', payload: story });
   } catch (error) {
     res.status(500).json({ status: 'failure', payload: error });
   }
@@ -47,7 +47,7 @@ exports.updateStory = async (req, res) => {
 exports.deleteStory = async (req, res) => {
   try {
     await Story.deleteOne({ _id: req.params.id, authorId: req.userId });
-    res.status(204).json({ status: 'success', payload: null });
+    res.status(204).send();
   } catch (error) {
     res.status(500).json({ status: 'failure', payload: error });
   }
