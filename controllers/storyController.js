@@ -33,11 +33,13 @@ exports.getStory = async (req, res) => {
 
 exports.updateStory = async (req, res) => {
   try {
-    let story = await Story.findByIdAndUpdate(req.params.id, req.body, {
+    let story = await Story.findOneAndUpdate({
+      _id: req.params.id,
+      authorId: req.userId
+    }, req.body, {
       new: true,
       runValidators: true
     });
-    await story.save();
     res.status(200).json({ status: 'success', payload: story });
   } catch (error) {
     res.status(500).json({ status: 'failure', payload: error });
