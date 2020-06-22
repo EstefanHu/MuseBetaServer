@@ -4,18 +4,19 @@ const Story = require('../models/Story.js');
 exports.createStory = async (req, res) => {
   try {
     const { title, pitch, genre, longitude, latitude, community, body } = req.body;
-    const authorInfo = await User.findById(req.userId); 
+    const authorInfo = await User.findById(req.userId);
     const authorName = authorInfo.firstName + ' ' + authorInfo.lastName
-    let story = new Story();
-    story.title = title;
-    story.genre = genre;
-    story.pitch = pitch;
-    story.author = authorName;
-    story.authorId = authorInfo._id;
-    story.community = community;
-    story.body = body;
-    story.longitude = longitude;
-    story.latitude = latitude;
+    let story = new Story({
+      title,
+      genre,
+      pitch,
+      author: authorName,
+      authorId: authorInfo._id,
+      community,
+      body,
+      longitude,
+      latitude
+    });
     await story.save();
     res.status(201).json({ status: 'success', payload: story._id });
   } catch (error) {
