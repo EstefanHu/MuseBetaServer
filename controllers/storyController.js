@@ -83,17 +83,21 @@ exports.getStoryMeta = async (req, res) => {
   try {
     const meta = await Story.aggregate([
       {
-        $match: { ratingsAverage: { $gte: 4.5 } }
+        $match: { authorId: req.userId }
       },
       {
         $group: {
-          _id: null,
-          numRatings: {$sum: '$ratingsQuantity'},
+          _id: { $toUpper: '$status' },
+          numStories: { $sum: 1 },
+          numRatings: { $sum: '$ratingsQuantity' },
           avgRating: { $avg: '$ratingsAverage' },
           avgDuration: { $avg: '$duration' },
           minDuration: { $min: '$duration' },
           maxDuration: { $max: '$duration' }
         }
+      },
+      {
+        $sort: { avgDuration: 1 }
       }
     ]);
 

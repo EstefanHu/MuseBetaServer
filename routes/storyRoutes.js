@@ -6,12 +6,13 @@ const router = express.Router();
 router.route('/public-lore')
   .get(storyController.getPublicLore, storyController.getStories);
 
-router.route('/story-meta').get(storyController.getStoryMeta);
 
 // ==============
 // PRIVATE ROUTES
 // ==============
 router.use(requireAuth);
+
+router.route('/story-meta').get(storyController.getStoryMeta);
 
 router
   .route('/')
@@ -23,5 +24,6 @@ router
   .get(storyController.getStory)
   .patch(storyController.updateStory)
   .delete(storyController.deleteStory);
+
 
 module.exports = router;

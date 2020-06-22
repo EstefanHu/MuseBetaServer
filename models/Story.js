@@ -72,7 +72,7 @@ const storySchema = new Schema({
   },
   ratingsAverage: {
     type: Number,
-    default: null
+    default: 4.5
   },
   duration: {
     type: Number,
