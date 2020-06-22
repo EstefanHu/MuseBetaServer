@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const User = require('../models/User.js');
 
 exports.getUser = async (req, res) => {
@@ -15,30 +16,16 @@ exports.getUser = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   try {
-    const { firstName, lastName, email } = req.body;
+    const { firstName, lastName, email, password, newPassword } = req.body;
 
-    // let check = await User.findOne({ email });
+    let user = await User.findById(req.userId);
 
-    // if (check) {
-    //   if (check._id != req.session.userID)
-    //     return res.json({ err: 'Email already in use' });
+    if (firstName !== user.firstName) updateFirstName(firstName);
+    if (lastName !== user.lastName) updateLastName(lastName);
+    if (email !== user.email) updateEmail(email);
+    if (bcrypt.compare(password, user.password)) updatePassword(newPassword);
 
-    //   await check.update({
-    //     firstName,
-    //     lastName
-    //   });
-    // } else {
-    //   await User.findByIdAndUpdate(
-    //     { _id: req.session.userID },
-    //     {
-    //       firstName,
-    //       lastName,
-    //       email
-    //     }
-    //   );
-    // }
-
-    res.status(200).json({ status: 'success', payload: 'hello world' });
+    res.status(200).json({ status: 'success', payload: user._id });
   } catch (error) {
     res.status(500).json({ status: 'failure', payload: error });
   }
@@ -51,4 +38,20 @@ exports.deleteUser = async (req, res) => {
   } catch (error) {
     res.status(500).json({ status: 'failure', payload: error });
   }
+}
+
+const updateFirstName = async firstName => {
+  console.log(firstName);
+}
+
+const updateLastName = async lastName => {
+  console.log(lastName);
+}
+
+const updateEmail = async email => {
+  console.log(email);
+}
+
+const updatePassword = async password => {
+  console.log(password);
 }
