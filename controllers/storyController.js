@@ -15,6 +15,10 @@ exports.getStories = async (req, res) => {
       query = query.sort(req.query.sort.split(',').join(' '))
       : query = query.sort('credibility');
 
+    req.query.fields ?
+      query = query.select(req.query.fields.split(',').join(' '))
+      : query = query.select('-__v -updatedAt');
+
     const stories = await query;
 
     res.status(200).json({ status: 'success', results: stories.length, payload: stories });
