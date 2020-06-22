@@ -1,5 +1,6 @@
 const User = require('../models/User.js');
 const Story = require('../models/Story.js');
+const e = require('express');
 
 exports.createStory = async (req, res) => {
   try {
@@ -45,8 +46,8 @@ exports.updateStory = async (req, res) => {
 
 exports.deleteStory = async (req, res) => {
   try {
-    await Story.findByIdAndDelete(req.params.id);
-    res.status(200).json({ status: 'success', payload: req.params.id });
+    await Story.deleteOne({ _id: req.params.id, authorId: req.userId });
+    res.status(204).json({ status: 'success', payload: null });
   } catch (error) {
     res.status(500).json({ status: 'failure', payload: error });
   }
