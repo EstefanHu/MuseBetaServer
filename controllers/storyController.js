@@ -4,12 +4,12 @@ const e = require('express');
 
 exports.getStories = async (req, res) => {
   try {
-    const { community } = req.query;
-    console.log(community);
+    // const { community, status, } = req.query;
+    const queryObj = { ...req.query }
+    const excludedFields = ['page', 'sort', 'limit', 'fields'];
+    excludedFields.forEach(el => delete queryObj[el]);
 
-    let stories = await Story
-      .find({ community })
-      .sort({ credibility: 'desc' });
+    let stories = await Story.find(queryObj);
 
     res.status(200).json({ status: 'success', results: stories.length, payload: stories });
   } catch (error) {

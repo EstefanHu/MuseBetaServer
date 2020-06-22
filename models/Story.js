@@ -7,6 +7,10 @@ const storySchema = new Schema({
     required: true,
     default: ''
   },
+  status: {
+    type: String,
+    default: 'Rumor'
+  },
   genre: {
     type: String,
     required: true,
