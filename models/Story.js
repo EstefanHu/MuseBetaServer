@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 const storySchema = new Schema({
   title: {
     type: String,
+    trim: true,
     required: true,
     default: ''
   },
@@ -14,6 +15,7 @@ const storySchema = new Schema({
   },
   pitch: {
     type: String,
+    trim: true,
     required: true,
     default: ''
   },
@@ -23,10 +25,12 @@ const storySchema = new Schema({
   },
   longitude: {
     type: Number,
+    trim: true,
     required: true
   },
   latitude: {
     type: Number,
+    trim: true,
     required: true
   },
   body: {
@@ -45,6 +49,14 @@ const storySchema = new Schema({
     type: Date,
     default: Date.now(),
     required: true,
+  },
+  imageCover: {
+    type: String,
+    default: 'placeholder'
+  },
+  type: {
+    type: String,
+    default: 'Text'
   },
   status: {
     type: String,
