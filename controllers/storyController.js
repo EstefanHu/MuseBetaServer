@@ -5,20 +5,15 @@ exports.createStory = async (req, res) => {
   try {
     const { title, pitch, genre, longitude, latitude, community, body } = req.body;
     const authorInfo = await User.findById(req.userId);
-    const authorName = authorInfo.firstName + ' ' + authorInfo.lastName
     let story = new Story({
-      title,
-      genre,
-      pitch,
-      author: authorName,
+      title, genre, pitch,
+      author: authorInfo.firstName + ' ' + authorInfo.lastName,
       authorId: authorInfo._id,
-      community,
-      body,
-      longitude,
-      latitude
+      longitude, latitude,
+      community, body
     });
-    await story.save();
-    res.status(201).json({ status: 'success', payload: story._id });
+    const response = await story.save();
+    res.status(201).json({ status: 'success', payload: response });
   } catch (error) {
     console.log(error);
     res.status(500).json({ status: 'failure', payload: error });
