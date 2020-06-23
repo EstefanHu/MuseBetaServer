@@ -29,11 +29,11 @@ exports.getStories = async (req, res) => {
 exports.createStory = async (req, res) => {
   try {
     const { title, pitch, genre, longitude, latitude, community, body } = req.body;
-    const authorInfo = await User.findById(req.userId);
+    const { _id, authorName } = await User.findById(req.userId);
     let story = new Story({
       title, genre, pitch,
-      author: authorInfo.authorName,
-      authorId: authorInfo._id,
+      author: authorName,
+      authorId: _id,
       longitude, latitude,
       community, body
     });
