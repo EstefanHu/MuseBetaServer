@@ -13,6 +13,7 @@ router.route('/public-lore')
 router.use(requireAuth);
 
 router.route('/story-meta').get(storyController.getStoryMeta);
+router.route('/daily_meta/:community').get(storyController.getDailyMeta);
 
 router
   .route('/')

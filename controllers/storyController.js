@@ -32,7 +32,7 @@ exports.createStory = async (req, res) => {
     const authorInfo = await User.findById(req.userId);
     let story = new Story({
       title, genre, pitch,
-      author: authorInfo.firstName + ' ' + authorInfo.lastName,
+      author: authorInfo.authorName,
       authorId: authorInfo._id,
       longitude, latitude,
       community, body
@@ -104,5 +104,21 @@ exports.getStoryMeta = async (req, res) => {
     res.status(200).json({ status: 'success', payload: meta });
   } catch (error) {
     res.status(404).json({ status: 'failure', payload: error });
+  }
+}
+
+exports.getDailyMeta = async (req, res) => {
+  try {
+    const community = req.params.community;
+
+    const data = await Story.aggregate([
+      {
+        $match: { community: community }
+      }
+    ])
+
+    res.status(200).json({ status: 'success', payload: { data } })
+  } catch (error) {
+
   }
 }

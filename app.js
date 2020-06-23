@@ -13,6 +13,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors('*'));
 
+app.get(('/'), (req, res) => {
+  res.json({ status: 'success', payload: 'Hello World' });
+})
+
 // ROUTES
 app.use('/auth', require('./routes/authRoutes'));
 app.use('/config', require('./routes/configRoutes'));

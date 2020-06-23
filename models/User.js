@@ -49,8 +49,14 @@ const userSchema = new Schema({
     type: String
   }
 }, {
-  timestamps: true
+  timestamps: true,
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
 });
+
+userSchema.virtual('authorName').get(function () {
+  return this.firstName + ' ' + this.lastName;
+})
 
 // https://www.mongodb.com/blog/post/password-authentication-with-mongoose-part-1
 userSchema.pre('save', function (next) {
