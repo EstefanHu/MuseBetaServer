@@ -1,25 +1,22 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const catchAsync = require('./../utils/catchAsync.js');
 const User = require('../models/User.js');
 
-exports.getAuthorized = async (req, res) => {
-  try {
-    const response = req.body.type === 'login' ?
-      await login(req.body.payload)
-      : await register(req.body.payload);
+exports.getAuthorized = catchAsync(async (req, res, next) => {
+  const response = req.body.type === 'login' ?
+    await login(req.body.payload)
+    : await register(req.body.payload);
 
-    if (response.status === 422)
-      return res.status(response.status).json({
-        status: 'failure',
-        payload: response.payload
-      });
+  if (response.status === 422)
+    return res.status(response.status).json({
+      status: 'failure',
+      payload: response.payload
+    });
 
-    const token = jwt.sign({ userId: response.payload }, process.env.JWT_KEY, { expiresIn: '1d' });
-    res.status(response.status).json({ status: 'success', payload: token });
-  } catch (error) {
-    res.status(500).json({ status: 'failure', payload: error });
-  };
-};
+  const token = jwt.sign({ userId: response.payload }, process.env.JWT_KEY, { expiresIn: '1d' });
+  res.status(response.status).json({ status: 'success', payload: token });
+});
 
 const login = async payload => {
   const { email, password } = payload;

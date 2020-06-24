@@ -1,44 +1,33 @@
 const bcrypt = require('bcryptjs');
+const catchAsync = require('./../utils/catchAsync.js');
 const User = require('../models/User.js');
 
-exports.getUser = async (req, res) => {
-  try {
-    const id = req.params.id;
-    let user;
-    id ? user = await User.findById(id)
-      : user = await User.findById(req.userId);
-    res.status(200).json({ status: 'success', payload: user });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ status: 'failure', payload: error });
-  }
-}
+exports.getUser = catchAsync(async (req, res, next) => {
+  const id = req.params.id;
+  let user;
+  id ? user = await User.findById(id)
+    : user = await User.findById(req.userId);
+  res.status(200).json({ status: 'success', payload: user });
+});
 
-exports.updateUser = async (req, res) => {
-  try {
-    const { firstName, lastName, email, password, newPassword } = req.body;
+// TODO: translate to business logic
+exports.updateUser = catchAsync(async (req, res, next) => {
+  const { firstName, lastName, email, password, newPassword } = req.body;
 
-    let user = await User.findById(req.userId);
+  let user = await User.findById(req.userId);
 
-    if (firstName !== user.firstName) updateFirstName(firstName);
-    if (lastName !== user.lastName) updateLastName(lastName);
-    if (email !== user.email) updateEmail(email);
-    if (bcrypt.compare(password, user.password)) updatePassword(newPassword);
+  if (firstName !== user.firstName) updateFirstName(firstName);
+  if (lastName !== user.lastName) updateLastName(lastName);
+  if (email !== user.email) updateEmail(email);
+  if (bcrypt.compare(password, user.password)) updatePassword(newPassword);
 
-    res.status(200).json({ status: 'success', payload: user._id });
-  } catch (error) {
-    res.status(500).json({ status: 'failure', payload: error });
-  }
-}
+  res.status(200).json({ status: 'success', payload: user._id });
+});
 
-exports.deleteUser = async (req, res) => {
-  try {
-    await User.findByIdAndDelete(req.userId);
-    res.status(200).json({ status: 'success' });
-  } catch (error) {
-    res.status(500).json({ status: 'failure', payload: error });
-  }
-}
+exports.deleteUser = catchAsync(async (req, res, next) => {
+  await User.findByIdAndDelete(req.userId);
+  res.status(200).json({ status: 'success' });
+});
 
 const updateFirstName = async firstName => {
   console.log(firstName);
