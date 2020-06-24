@@ -20,10 +20,12 @@ mongoose.connection.once('open', () => {
 });
 
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
 
 process.on('unhandledRejection', error => {
   console.error(error.name, error.message);
-})
+  console.log('UNHANDLED REJECTION: Shutting down...');
+  server.close(() => process.exit(1));
+});
