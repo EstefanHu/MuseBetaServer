@@ -1,8 +1,11 @@
 const app = require('./app.js');
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 // MONGO CONNECTION
-const DB_CONNECTION = process.env.APP_DB || 'muse_beta';
+const DB_CONNECTION = process.env.APP_DB || 'DUMMY_DATA';
 mongoose.connect(`mongodb://localhost/${DB_CONNECTION}`,
   {
     useNewUrlParser: true,
