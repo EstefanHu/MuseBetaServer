@@ -2,6 +2,7 @@ const User = require('./../models/User.js');
 const Story = require('./../models/Story.js');
 const catchAsync = require('./../utils/catchAsync.js');
 const APIFeatures = require('./../utils/apiFeatures.js');
+const AppError = require('../utils/appError.js');
 
 exports.getPublicLore = async (req, _, next) => {
   req.query.limit = '5';
@@ -12,6 +13,7 @@ exports.getPublicLore = async (req, _, next) => {
 }
 
 exports.getStories = catchAsync(async (req, res, next) => {
+  if (!req.query.community) return next('No community was provided', 400);
   const features = new APIFeatures(Story.find(), req.query)
     .filter()
     .sort()
@@ -38,6 +40,7 @@ exports.createStory = catchAsync(async (req, res, next) => {
 
 exports.getStory = catchAsync(async (req, res, next) => {
   let story = await Story.findById(req.params.id);
+  if (!story) return next(new AppError('No Story found with that ID', 404));
   res.json({ status: 'success', payload: story });
 })
 
@@ -49,12 +52,14 @@ exports.updateStory = catchAsync(async (req, res, next) => {
     new: true,
     runValidators: true
   });
+  if (!story) return next(new AppError('No Story found with that ID', 404));
   res.status(200).json({ status: 'success', payload: story });
 });
 
 exports.deleteStory = catchAsync(async (req, res, next) => {
-  await Story.deleteOne({ _id: req.params.id, authorId: req.userId });
-  res.status(204).send();
+  const story = await Story.deleteOne({ _id: req.params.id, authorId: req.userId });
+  if (!story) return next(new AppError('No Story found with that ID', 404));
+  res.status(204).json({ status: 'success', payload: null });
 });
 
 exports.getStoryMeta = catchAsync(async (req, res, next) => {
