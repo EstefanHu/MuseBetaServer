@@ -8,27 +8,23 @@ const userSchema = new Schema({
     type: String,
     required: true,
     trim: true,
-    default: ''
   },
   lastName: {
     type: String,
     required: true,
     trim: true,
-    default: ''
   },
   email: {
     type: String,
-    required: true,
+    required: [true, 'Please provide your email'],
     unique: true,
     trim: true,
-    minlength: 5,
-    default: ''
+    validate: [validator.isEmail, 'Please rovide valid email.']
   },
   password: {
     type: String,
-    required: true,
+    required: [true, 'Please provide a password'],
     minlength: 8,
-    default: ''
   },
   credibility: {
     type: Number,

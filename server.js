@@ -2,6 +2,12 @@ const app = require('./app.js');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
+process.on('uncaughtException', error => {
+  console.error('UNCAUGHT EXCEPTION! Shutting down...');
+  console.log(error.name, error.message);
+  process.exit(1);
+});
+
 dotenv.config();
 
 // MONGO CONNECTION
@@ -29,11 +35,3 @@ process.on('unhandledRejection', error => {
   console.log('UNHANDLED REJECTION: Shutting down...');
   server.close(() => process.exit(1));
 });
-
-process.on('uncaughtException', error => {
-  console.error('UNCAUGHT EXCEPTION! Shutting down...');
-  console.log(error.name, error.message);
-  server.close(() => process.exit(1));
-});
-
-console.log(x);
