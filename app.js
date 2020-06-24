@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const AppError = require('./utils/appError.js');
+const globalErrorHandler = require('./controllers/errorController.js');
 const app = express();
 
 // MODEL IMPORTS
@@ -24,17 +26,9 @@ app.use('/user', require('./routes/userRoutes'));
 app.use('/story', require('./routes/storyRoutes'));
 
 app.all('*', (req, res, next) => {
-  const err = new Error(`Can't find ${req.originalUrl}`);
-  err.status = 'failure';
-  err.statusCode = 404;
-  next(err);
+  next(new AppError(`Can't find ${req.originalUrl}`));
 });
 
-app.use((err, req, res, next) => {
-  err.statusCode = err.statusCode || 500;
-  err.status = err.status || 'error';
-
-  res.status(err.statusCode).json({ type: err.status, payload: err.message });
-});
+app.use(globalErrorHandler);
 
 module.exports = app;
