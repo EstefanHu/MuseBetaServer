@@ -42,7 +42,7 @@ exports.getStory = catchAsync(async (req, res, next) => {
   let story = await Story.findById(req.params.id);
   if (!story) return next(new AppError('No Story found with that ID', 404));
   res.json({ status: 'success', payload: story });
-})
+});
 
 exports.updateStory = catchAsync(async (req, res, next) => {
   let story = await Story.findOneAndUpdate({
