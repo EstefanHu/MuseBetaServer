@@ -6,13 +6,26 @@ const storySchema = new Schema({
   title: {
     type: String,
     trim: true,
-    required: true,
+    required: [true, 'Story must have a title'],
     default: ''
   },
   genre: {
     type: String,
-    required: true,
-    default: ''
+    required: [true, 'Story must have a genre'],
+    enum: {
+      values: [
+        'Fiction',
+        'Poetry',
+        'Non-Fiction',
+        'Speculative',
+        'YA',
+        'Religion',
+        'Sci-Fi',
+        'Fantasy',
+        'Essay'
+      ],
+      message: 'Genre is not supported'
+    }
   },
   pitch: {
     type: String,
@@ -23,7 +36,7 @@ const storySchema = new Schema({
   },
   community: {
     type: String,
-    required: true,
+    required: [true, 'Story must have assigned community'],
   },
   longitude: {
     type: Number,
@@ -99,7 +112,7 @@ storySchema.pre('save', function (next) {
 });
 
 // Query middleware
-storySchema.pre(/^find/, function(next) {
+storySchema.pre(/^find/, function (next) {
 
   next();
 });
