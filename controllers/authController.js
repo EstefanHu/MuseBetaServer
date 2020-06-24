@@ -3,6 +3,38 @@ const bcrypt = require('bcryptjs');
 const catchAsync = require('./../utils/catchAsync.js');
 const User = require('../models/User.js');
 
+exports.register = catchAsync(async (req, res, next) => {
+  let user = await User.create(req.body);
+  const token = jwt.sign({ userId: user._id }, process.env.JWT_KEY, { expiresIn: '1d' });
+  res.status(201).json({ status: 'success', payload: token });
+});
+
+exports.login = catchAsync(async (req, res, next) => {
+  const { email, password } = req.body;
+  if (!email || !password)
+    return {
+      status: 422,
+      payload: 'Must provide email and password'
+    };
+
+  let user = await User.findOne({ email });
+  if (!user)
+    return {
+      status: 422,
+      payload: 'Email or Password was incorrect'
+    };
+
+  const valid = await bcrypt.compare(password, user.password);
+  if (!valid)
+    return {
+      status: 422,
+      payload: 'Email or Password was incorrect'
+    };
+
+  const token = jwt.sign({ userId: user._id }, process.env.JWT_KEY, { expiresIn: '1d' });
+  res.status(200).json({ status: 'success', payload: token });
+});
+
 exports.getAuthorized = catchAsync(async (req, res, next) => {
   const response = req.body.type === 'login' ?
     await login(req.body.payload)
