@@ -29,3 +29,11 @@ process.on('unhandledRejection', error => {
   console.log('UNHANDLED REJECTION: Shutting down...');
   server.close(() => process.exit(1));
 });
+
+process.on('uncaughtException', error => {
+  console.error('UNCAUGHT EXCEPTION! Shutting down...');
+  console.log(error.name, error.message);
+  server.close(() => process.exit(1));
+});
+
+console.log(x);
