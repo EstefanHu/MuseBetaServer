@@ -23,4 +23,18 @@ app.use('/config', require('./routes/configRoutes'));
 app.use('/user', require('./routes/userRoutes'));
 app.use('/story', require('./routes/storyRoutes'));
 
+app.all('*', (req, res, next) => {
+  const err = new Error(`Can't find ${req.originalUrl}`);
+  err.status = 'failure';
+  err.statusCode = 404;
+  next(err);
+});
+
+app.use((err, req, res, next) => {
+  err.statusCode = err.statusCode || 500;
+  err.status = err.status || 'error';
+
+  res.status(err.statusCode).json({ type: err.status, payload: err.message });
+});
+
 module.exports = app;
