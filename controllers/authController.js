@@ -56,3 +56,9 @@ exports.protect = catchAsync(async (req, res, next) => {
   req.user = freshUser;
   next();
 });
+
+exports.restrict = catchAsync(async (req, res, next) => {
+  if (req.user._id !== req.param.id)
+    return next(new AppError('You do not have permission to perform this action.', 403));
+  next();
+});

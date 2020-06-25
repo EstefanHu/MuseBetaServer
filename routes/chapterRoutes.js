@@ -5,14 +5,15 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(authController.protect, chapterController.getChapters);
+  .get(authController.protect, chapterController.getChapters)
+  .post(authController.protect, chapterController.createChapter);
 
 router
-  .router('/:id')
+  .route('/:id')
   .get(authController.protect, chapterController.getChapter)
   .delete(
     authController.protect,
-    authController.restrictTo('founder'),
+    authController.restrict,
     chapterController.deleteChapter
   );
 
