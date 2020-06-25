@@ -11,10 +11,6 @@ router
 router
   .route('/:id')
   .get(authController.protect, chapterController.getChapter)
-  .delete(
-    authController.protect,
-    authController.restrict,
-    chapterController.deleteChapter
-  );
+  .delete(authController.protect, chapterController.deleteChapter);
 
 module.exports = router;

@@ -38,10 +38,15 @@ const userSchema = new Schema({
   },
   passwordChangedAt: Date,
   photo: String,
+  role: {
+    type: String,
+    enum: ['user', 'admin'],
+    default: 'user'
+  },
   type: {
     type: String,
-    enum: ['user', 'prime', 'deluxe'],
-    default: 'user'
+    enum: ['base', 'prime', 'deluxe'],
+    default: 'base'
   },
   credibility: {
     type: Number,
