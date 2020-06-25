@@ -8,12 +8,12 @@ router.post('/register', authController.register);
 
 router.post('/forgotPassword', authController.forgotPassword);
 router.patch('/resetPassword/:token', authController.resetPassword);
-router.patch('/updateMyPassword', authController.protect, authController.updatePassword);
+router.patch('/updateMyPassword', authController.protect, authController.updateMyPassword);
+router.patch('/updateMe', authController.protect, userController.updateMe);
 
 router
   .route('/')
   .get(authController.protect, userController.getUser)
-  .patch(authController.protect, userController.updateUser)
   .delete(authController.protect, userController.deleteUser);
 
 router

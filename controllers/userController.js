@@ -1,6 +1,15 @@
-const bcrypt = require('bcryptjs');
 const catchAsync = require('./../utils/catchAsync.js');
 const User = require('../models/User.js');
+const AppError = require('./../utils/appError.js');
+
+const filterObj = (obj, ...allowedFields) => {
+  const newObj = {};
+  Object.keys(obj).forEach(el => {
+    if (allowedFields.includes(el))
+      newObj[el] = obj[el];
+  });
+  return newObj;
+}
 
 exports.getUser = catchAsync(async (req, res, next) => {
   const id = req.params.id;
@@ -10,37 +19,24 @@ exports.getUser = catchAsync(async (req, res, next) => {
   res.status(200).json({ status: 'success', payload: user });
 });
 
-// TODO: translate to business logic
-exports.updateUser = catchAsync(async (req, res, next) => {
-  const { firstName, lastName, email, password, newPassword } = req.body;
+exports.updateMe = catchAsync(async (req, res, next) => {
+  if (req.body.password || req.body.confirmPassword)
+    return next(new AppError('This route is not for password updates. Please use /updateMyPassword', 400));
 
-  let user = await User.findById(req.userId);
+  const filteredBody = filterObj(req.body, 'firstName', 'lastName', 'email');
+  const updatedUser =
+    await User.findByIdAndUpdate(
+      req.user._id,
+      filteredBody,
+      {
+        new: true,
+        runValidators: true
+      });
 
-  if (firstName !== user.firstName) updateFirstName(firstName);
-  if (lastName !== user.lastName) updateLastName(lastName);
-  if (email !== user.email) updateEmail(email);
-  if (bcrypt.compare(password, user.password)) updatePassword(newPassword);
-
-  res.status(200).json({ status: 'success', payload: user._id });
+  res.status(200).json({ status: 'success', payload: updatedUser });
 });
 
 exports.deleteUser = catchAsync(async (req, res, next) => {
   await User.findByIdAndDelete(req.userId);
   res.status(200).json({ status: 'success' });
 });
-
-const updateFirstName = async firstName => {
-  console.log(firstName);
-}
-
-const updateLastName = async lastName => {
-  console.log(lastName);
-}
-
-const updateEmail = async email => {
-  console.log(email);
-}
-
-const updatePassword = async password => {
-  console.log(password);
-}
