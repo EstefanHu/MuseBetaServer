@@ -1,6 +1,6 @@
 const express = require('express');
 const storyController = require('./../controllers/storyController.js');
-const { protect } = require('./../controllers/authController.js');
+const authController = require('./../controllers/authController.js');
 const router = express.Router();
 
 router.route('/public-lore')
@@ -11,14 +11,18 @@ router.route('/daily_meta/:community').get(storyController.getDailyMeta);
 
 router
   .route('/')
-  .get(protect, storyController.getStories)
-  .post(protect, storyController.createStory);
+  .get(authController.protect, storyController.getStories)
+  .post(authController.protect, storyController.createStory);
 
 router
   .route('/:id')
-  .get(protect, storyController.getStory)
-  .patch(protect, storyController.updateStory)
-  .delete(protect, storyController.deleteStory);
+  .get(authController.protect, storyController.getStory)
+  .patch(authController.protect, storyController.updateStory)
+  .delete(
+    authController.protect,
+    // authController.restrictTo('admin'),
+    storyController.deleteStory
+  );
 
 
 module.exports = router;
