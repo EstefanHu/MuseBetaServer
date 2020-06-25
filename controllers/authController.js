@@ -36,7 +36,7 @@ exports.login = catchAsync(async (req, res, next) => {
   res.status(200).json({ status: 'success', token, payload: user });
 });
 
-exports.protect = catchAsync(async (req, _, next) => {
+exports.protect = catchAsync(async (req, res, next) => {
   // check if token exists
   if (!req.headers.authorization || !req.headers.authorization.startsWith('Bearer '))
     return next(new AppError('You must log in for access to this resource.', 401));
@@ -58,7 +58,7 @@ exports.protect = catchAsync(async (req, _, next) => {
 });
 
 exports.restrictTo = (...roles) => {
-  return (req, _, next) => {
+  return (req, res, next) => {
     if (!roles.includes(req.user.role))
       return next(new AppError('You do not have permission to perform this action.', 403));
     next();

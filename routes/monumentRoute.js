@@ -5,12 +5,12 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(authController.protect, monumentController.getMonumnets)
+  .get(authController.protect, monumentController.getMonuments)
   .post(authController.protect, monumentController.createMonument);
 
 router
   .route('/:id')
-  .get(authController.protect, monumentController.getMonumnet)
+  .get(authController.protect, monumentController.getMonument)
   .delete(
     authController.protect,
     authController.restrictTo('admin'),
