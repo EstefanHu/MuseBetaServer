@@ -1,4 +1,4 @@
-const Monument = requrie('./../models/Monument.js');
+const Monument = require('./../models/Monument.js');
 const catchAsync = require('./../utils/catchAsync.js');
 const APIFeatures = require('../utils/apiFeatures.js');
 const AppError = require('./../utils/appError.js');
@@ -25,6 +25,12 @@ exports.createMonument = catchAsync(async (req, res, next) => {
   });
   res.status(201).json({ status: 'success', payload: monument });
 });
+
+exports.getMonument = catchAsync(async (req, res, next) => {
+  const monument = await Monument.findById(req.params.id);
+  if (!monument) return next(new AppError('No Monument found with that ID', 404));
+  res.status(200).json({ status: 'success', payload: monument });
+})
 
 exports.deleteMonument = catchAsync(async (req, res, next) => {
   const monument = await Monument.deleteOne({ _id: req.params.id });

@@ -22,6 +22,7 @@ app.get(('/'), (req, res) => {
 app.use('/config', require('./routes/configRoutes'));
 app.use('/user', require('./routes/userRoutes'));
 app.use('/story', require('./routes/storyRoutes'));
+app.use('/monument', require('./routes/monumentRoute'));
 app.use('/chapter', require('./routes/chapterRoutes'));
 
 app.all('*', (req, res, next) => {
