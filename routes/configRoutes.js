@@ -1,12 +1,10 @@
 const express = require('express');
-const configController = require('../controllers/configController.js');
-const requireAuth = require('../middlewares/requireAuth');
+const configController = require('./../controllers/configController.js');
+const { protect } = require('./../controllers/authController.js');
 const router = express.Router();
-
-router.use(requireAuth);
 
 router
   .route('/')
-  .get(configController.getMapKey);
+  .get(protect, configController.getMapKey);
 
 module.exports = router;
