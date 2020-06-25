@@ -9,7 +9,19 @@ const chapterSchema = new Schema({
   },
   founder: {
     type: String //will reference user
-  }
+  },
+  photo: String,
+  slug: String,
+});
+
+chapterSchema.pre('save', function (next) {
+  this.slug =
+    slugify(this.name, {
+      remove: /[*+~.()'"!:@]/g,
+      lower: true,
+      strict: true,
+    });
+  next();
 });
 
 module.exports = mongoose.model('Chapter', chapterSchema);

@@ -1,16 +1,16 @@
 const Chapter = require('./../models/Chapter.js');
 const catchAsync = require('./../utils/catchAsync.js');
-const AppError = require('./../utils/appError.js');
 const APIFeatures = require('../utils/apiFeatures.js');
+const AppError = require('./../utils/appError.js');
 
 exports.getChapters = catchAsync(async (req, res, next) => {
   if (req.query.community) return next('No community was provided', 400);
-  const featuers = new APIFeatures(Chapter.find(), req.query)
+  const features = new APIFeatures(Chapter.find(), req.query)
     .filter()
     .sort()
     .limitFields()
     .paginate();
-  const chapters = await featuers.query;
+  const chapters = await features.query;
 
   res.status(200).json({ status: 'success', results: chapters.length, payload: chapters });
 });

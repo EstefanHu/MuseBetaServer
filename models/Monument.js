@@ -1,9 +1,8 @@
 const mongoose = require('mongoose');
-const { Scheme } = mongoose;
+const { Schema } = mongoose;
 const slugify = require('slugify');
-const { schema } = require('./User');
 
-const monumentSchema = new schema({
+const monumentSchema = new Schema({
   name: {
     type: String,
     trim: true,
@@ -29,6 +28,7 @@ const monumentSchema = new schema({
   photo: String,
   feed: {
     type: [String],
+    default: []
   }
 });
 
