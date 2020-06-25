@@ -20,7 +20,6 @@ router
   .patch(authController.protect, storyController.updateStory)
   .delete(
     authController.protect,
-    // authController.restrictTo('admin'),
     storyController.deleteStory
   );
 

@@ -7,6 +7,9 @@ const chapterSchema = new Schema({
     type: String,
     required: true,
   },
+  founder: {
+    type: String //will reference user
+  }
 });
 
 module.exports = mongoose.model('Chapter', chapterSchema);
