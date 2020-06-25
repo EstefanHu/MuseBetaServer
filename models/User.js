@@ -3,6 +3,7 @@ const { Schema } = mongoose;
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
+const encryptEmailToken = require('./../utils/encryptEmailToken.js');
 
 const userSchema = new Schema({
   firstName: {
@@ -34,7 +35,8 @@ const userSchema = new Schema({
     validate: {
       validator: function (el) {
         return el === this.password;
-      }
+      },
+      message: 'Passwords do not match'
     }
   },
   passwordChangedAt: Date,
@@ -87,6 +89,13 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+userSchema.pre('save', function (next) {
+  if (!this.isModified('password') || this.isNew) return next();
+
+  this.passwordChangedAt = Date.now() - 1000; // Garentee JWT is valid
+  next();
+});
+
 userSchema.methods.correctPassword = async function (candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
 }
@@ -102,10 +111,7 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
 userSchema.methods.createPasswordResetToken = function () {
   const resetToken = crypto.randomBytes(32).toString('hex');
 
-  this.passwordResetToken = crypto
-    .createHash('sha256')
-    .update(resetToken)
-    .digest('hex');
+  this.passwordResetToken = encryptEmailToken(resetToken);
   console.log({ resetToken }, this.passwordResetToken);
   this.passwordTokenExpires = Date.now() + 600 * 60 * 1000; // 1 hour
 
