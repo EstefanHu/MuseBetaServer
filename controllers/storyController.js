@@ -42,7 +42,7 @@ exports.createStory = catchAsync(async (req, res, next) => {
 });
 
 exports.getStory = catchAsync(async (req, res, next) => {
-  let story = await Story.findById(req.params.id);
+  let story = await Story.findById(req.params.id).populate('reviews');
   if (!story) return next(new AppError('No Story found with that ID', 404));
   res.status(200).json({ status: 'success', payload: story });
 });

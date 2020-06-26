@@ -104,7 +104,15 @@ const storySchema = new Schema({
     default: null
   }
 }, {
-  timestamps: true
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
+});
+
+// virtual populate
+storySchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'modelId',
+  localField: '_id'
 });
 
 // Document middleware
@@ -115,12 +123,6 @@ storySchema.pre('save', function (next) {
       lower: true,
       strict: true,
     });
-  next();
-});
-
-// Query middleware
-storySchema.pre(/^find/, function (next) {
-
   next();
 });
 
