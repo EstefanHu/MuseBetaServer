@@ -4,21 +4,32 @@ const { Schema } = mongoose;
 const reviewSchema = new Schema({
   body: {
     type: String,
-    required: true,
+    required: [true, 'Review can not be empty']
   },
-  userId: {
-    type: mongoose.Schema.ObjectId,
+  rating: {
+    type: Number,
+    min: 1,
+    max: 5
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    required: true,
     ref: 'User'
   },
-  storyId: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'Story'
+  on: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    refPath: 'onModel'
+  },
+  onModel: {
+    type: String,
+    required: true,
+    enum: ['Story']
   },
   credibility: {
     type: Number,
     default: 0
   },
-  reports: Array,
   createdAt: {
     type: Date,
     default: Date.now
@@ -31,6 +42,11 @@ const reviewSchema = new Schema({
     type: Boolean,
     default: false
   }
-});
+},
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+  }
+);
 
 module.exports = mongoose.model('Review', reviewSchema);
