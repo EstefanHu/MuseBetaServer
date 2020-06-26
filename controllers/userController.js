@@ -11,12 +11,9 @@ const filterObj = (obj, ...allowedFields) => {
   return newObj;
 }
 
-exports.getUser = catchAsync(async (req, res, next) => {
-  const id = req.params.id;
-  let user;
-  id ? user = await User.findById(id)
-    : user = await User.findById(req.userId);
-  res.status(200).json({ status: 'success', payload: user });
+exports.getMe = catchAsync(async (req, res, next) => {
+  const currentUser = await User.findById(req.user._id);
+  res.status(200).json({ status: 'success', payload: currentUser });
 });
 
 exports.updateMe = catchAsync(async (req, res, next) => {
@@ -36,7 +33,12 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   res.status(200).json({ status: 'success', payload: updatedUser });
 });
 
-exports.deleteUser = catchAsync(async (req, res, next) => {
-  await User.findByIdAndDelete(req.userId);
-  res.status(200).json({ status: 'success' });
+exports.deleteMe = catchAsync(async (req, res, next) => {
+  await User.findByIdAndUpdate(req.user._id, { active: false });
+  res.status(204).json({ status: 'success', payload: null });
+});
+
+exports.getUser = catchAsync(async (req, res, next) => {
+  let user = await User.findById(req.params.id);
+  res.status(200).json({ status: 'success', payload: user });
 });

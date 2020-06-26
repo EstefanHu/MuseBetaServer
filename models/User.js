@@ -61,9 +61,10 @@ const userSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  isDeleted: {
+  active: {
     type: Boolean,
-    default: false
+    default: true,
+    select: false
   },
   googleId: {
     type: String
@@ -96,9 +97,14 @@ userSchema.pre('save', function (next) {
   next();
 });
 
+userSchema.pre(/^find/, function (next) {
+  this.find({ active: { $ne: false } });
+  next();
+});
+
 userSchema.methods.correctPassword = async function (candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
-}
+};
 
 userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
   if (this.passwordChangedAt) {
@@ -106,7 +112,7 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
     return JWTTimestamp < changedTimestamp;
   }
   return false;
-}
+};
 
 userSchema.methods.createPasswordResetToken = function () {
   const resetToken = crypto.randomBytes(32).toString('hex');
@@ -116,6 +122,6 @@ userSchema.methods.createPasswordResetToken = function () {
   this.passwordTokenExpires = Date.now() + 600 * 60 * 1000; // 1 hour
 
   return resetToken;
-}
+};
 
 module.exports = mongoose.model('User', userSchema);

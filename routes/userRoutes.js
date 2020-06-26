@@ -9,15 +9,15 @@ router.post('/register', authController.register);
 router.post('/forgotPassword', authController.forgotPassword);
 router.patch('/resetPassword/:token', authController.resetPassword);
 router.patch('/updateMyPassword', authController.protect, authController.updateMyPassword);
-router.patch('/updateMe', authController.protect, userController.updateMe);
 
 router
   .route('/')
-  .get(authController.protect, userController.getUser)
-  .delete(authController.protect, userController.deleteUser);
+  .get(authController.protect, userController.getMe)
+  .patch(authController.protect, userController.updateMe)
+  .delete(authController.protect, userController.deleteMe);
 
 router
   .route('/:id')
-  .get(authController.protect, userController.getUser)
+  .get(authController.protect, userController.getUser);
 
 module.exports = router;
