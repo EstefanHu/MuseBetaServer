@@ -25,12 +25,16 @@ exports.getStories = catchAsync(async (req, res, next) => {
 });
 
 exports.createStory = catchAsync(async (req, res, next) => {
-  const { title, pitch, genre, longitude, latitude, community, body } = req.body;
+  const { title, pitch, genre, longitude, latitude,
+    community, body, address, description } = req.body;
   let story = new Story({
     title, genre, pitch,
     author: req.user.authorName,
     authorId: req.user._id,
-    longitude, latitude,
+    startingLocation: {
+      coordinates: [longitude, latitude],
+      address, description
+    },
     community, body
   });
   const response = await story.save();

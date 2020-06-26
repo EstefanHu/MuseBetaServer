@@ -22,7 +22,8 @@ const storySchema = new Schema({
         'Religion',
         'Sci-Fi',
         'Fantasy',
-        'Essay'
+        'Essay',
+        'Article'
       ],
       message: 'Genre is not supported'
     }
@@ -38,16 +39,26 @@ const storySchema = new Schema({
     type: String,
     required: [true, 'Story must have assigned community'],
   },
-  longitude: {
-    type: Number,
-    trim: true,
-    required: true
+  startLocation: {
+    type: {
+      type: String,
+      default: 'Point',
+      enum: ['Point']
+    },
+    coordinates: [Number],
+    address: String,
+    description: String
   },
-  latitude: {
-    type: Number,
-    trim: true,
-    required: true
-  },
+  locations: [{
+    type: {
+      type: String,
+      default: 'Point',
+      enum: ['Point']
+    },
+    coordinates: [Number],
+    address: String,
+    description: String
+  }],
   body: {
     type: String,
     required: true
