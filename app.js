@@ -1,13 +1,21 @@
 const express = require('express');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 const bodyParser = require('body-parser');
 const AppError = require('./utils/appError.js');
 const globalErrorHandler = require('./controllers/errorController.js');
 const app = express();
 
 // MODEL IMPORTS
-require('./models/User');
-require('./models/Story');
+// require('./models/User');
+// require('./models/Story');
+
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  message: 'Too many requests from this IP, try again in one hour.'
+});
+app.use('/api',limiter)
 
 // MIDDLEWARE
 app.use(bodyParser.json());
