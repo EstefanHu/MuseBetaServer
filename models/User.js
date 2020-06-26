@@ -51,12 +51,14 @@ const userSchema = new Schema({
     type: mongoose.Schema.ObjectId,
     ref: 'Story'
   }],
-  organizations: [
-    {
-      type: mongoose.Schema.ObjectId,
-      enum: ['Page', 'Chapter', 'Book'],
-    }
-  ],
+  pages: [{
+    type: mongoose.Schema.ObjectId,
+    ref: 'Page'
+  }],
+  chapters: [{
+    type: mongoose.Schema.ObjectId,
+    ref: 'Chapter'
+  }],
   createdAt: {
     type: Date,
     default: Date.now
