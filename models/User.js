@@ -42,7 +42,7 @@ const userSchema = new Schema({
   links: [String],
   titles: [{
     name: String,
-    chapter: {
+    organization: {
       type: mongoose.Schema.ObjectId,
       enum: ['Page', 'Chapter'],
     },
@@ -96,9 +96,9 @@ const userSchema = new Schema({
   toObject: { virtuals: true }
 });
 
-userSchema.virtual('authorName').get(function () {
-  return this.firstName + ' ' + this.lastName;
-})
+// userSchema.virtual('authorName').get(function () {
+//   return this.firstName + ' ' + this.lastName;
+// })
 
 // https://www.mongodb.com/blog/post/password-authentication-with-mongoose-part-1
 userSchema.pre('save', async function (next) {
