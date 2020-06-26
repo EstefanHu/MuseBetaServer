@@ -2,15 +2,11 @@ const express = require('express');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
-const bodyParser = require('body-parser');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
 const AppError = require('./utils/appError.js');
 const globalErrorHandler = require('./controllers/errorController.js');
 const app = express();
-
-// MODEL IMPORTS
-// require('./models/User');
-// require('./models/Story');
-
 
 // MIDDLEWARE
 app.use(helmet());
@@ -23,7 +19,8 @@ app.use('/api', limiter);
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded());
 app.use(cors('*'));
-
+app.use(mongoSanitize());
+app.use(xss());
 app.get(('/'), (req, res) => {
   res.json({ status: 'success', payload: 'Hello World' });
 })
