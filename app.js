@@ -22,7 +22,9 @@ app.use(express.urlencoded());
 app.use(cors('*'));
 app.use(mongoSanitize());
 app.use(xss());
-app.use(hpp());
+app.use(hpp({
+  whitelist: [] // eventually add whitelist
+}));
 app.get(('/'), (req, res) => {
   res.json({ status: 'success', payload: 'Hello World' });
 })
