@@ -6,12 +6,7 @@ const crypto = require('crypto');
 const encryptEmailToken = require('./../utils/encryptEmailToken.js');
 
 const userSchema = new Schema({
-  firstName: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  lastName: {
+  name: {
     type: String,
     required: true,
     trim: true,
@@ -23,6 +18,59 @@ const userSchema = new Schema({
     trim: true,
     lowercase: true,
     validate: [validator.isEmail, 'Please provide valid email.']
+  },
+  photo: String,
+  role: {
+    type: String,
+    enum: ['user', 'admin'],
+    default: 'user'
+  },
+  type: {
+    type: String,
+    enum: ['free', 'prime', 'deluxe'],
+    default: 'free'
+  },
+  credibility: {
+    type: Number,
+    default: 0
+  },
+  bio: {
+    type: String,
+    maxlength: 280,
+  },
+  awards: [String], // TODO: User Test
+  links: [String],
+  titles: [{
+    name: String,
+    chapter: {
+      type: mongoose.Schema.ObjectId,
+      enum: ['Page', 'Chapter'],
+    },
+  }],
+  library: [{
+    type: mongoose.Schema.ObjectId,
+    ref: 'Story'
+  }],
+  organizations: [
+    {
+      type: mongoose.Schema.ObjectId,
+      enum: ['Page', 'Chapter', 'Book'],
+    }
+  ],
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  active: {
+    type: Boolean,
+    default: true,
+    select: false
+  },
+  googleId: {
+    type: String
+  },
+  facebookId: {
+    type: String
   },
   password: {
     type: String,
@@ -41,37 +89,7 @@ const userSchema = new Schema({
   },
   passwordChangedAt: Date,
   passwordResetToken: String,
-  passwordTokenExpires: Date,
-  photo: String,
-  role: {
-    type: String,
-    enum: ['user', 'admin'],
-    default: 'user'
-  },
-  type: {
-    type: String,
-    enum: ['base', 'prime', 'deluxe'],
-    default: 'base'
-  },
-  credibility: {
-    type: Number,
-    default: 0
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-  active: {
-    type: Boolean,
-    default: true,
-    select: false
-  },
-  googleId: {
-    type: String
-  },
-  facebookId: {
-    type: String
-  }
+  passwordTokenExpires: Date
 }, {
   timestamps: true,
   toJSON: { virtuals: true },
