@@ -29,7 +29,7 @@ exports.createStory = catchAsync(async (req, res, next) => {
     community, body, address, description } = req.body;
   let story = new Story({
     title, genre, pitch,
-    author: req.user.authorName,
+    author: req.user.name,
     authorId: req.user._id,
     startingLocation: {
       coordinates: [longitude, latitude],
