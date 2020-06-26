@@ -9,6 +9,25 @@ const reportSchema = new Schema({
   },
   user: {
     type: mongoose.Schema.ObjectId,
+    required: true,
     ref: 'User',
+  },
+  on: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    refPath: 'onModel'
+  },
+  onModel: {
+    type: String,
+    required: true,
+    enum: [
+      'User',
+      'Story',
+      'Review',
+      'Page',
+      'Chapter',
+      'Campfire',
+      'Monument'
+    ]
   }
 });

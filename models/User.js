@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const encryptEmailToken = require('./../utils/encryptEmailToken.js');
 
+// TODO: Add GROUPS, AWARDS, 
 const userSchema = new Schema({
   name: {
     type: String,
@@ -38,26 +39,10 @@ const userSchema = new Schema({
     type: String,
     maxlength: 280,
   },
-  awards: [String], // TODO: User Test
   links: [String],
-  titles: [{
-    name: String,
-    organization: {
-      type: mongoose.Schema.ObjectId,
-      enum: ['Page', 'Chapter'],
-    },
-  }],
   library: [{
-    type: mongoose.Schema.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'Story'
-  }],
-  pages: [{
-    type: mongoose.Schema.ObjectId,
-    ref: 'Page'
-  }],
-  chapters: [{
-    type: mongoose.Schema.ObjectId,
-    ref: 'Chapter'
   }],
   createdAt: {
     type: Date,
@@ -97,10 +82,6 @@ const userSchema = new Schema({
   toJSON: { virtuals: true },
   toObject: { virtuals: true }
 });
-
-// userSchema.virtual('authorName').get(function () {
-//   return this.firstName + ' ' + this.lastName;
-// })
 
 // https://www.mongodb.com/blog/post/password-authentication-with-mongoose-part-1
 userSchema.pre('save', async function (next) {
