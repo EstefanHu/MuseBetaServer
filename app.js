@@ -20,7 +20,7 @@ const limiter = rateLimit({
   message: 'Too many requests from this IP, try again in one hour.'
 });
 app.use('/api', limiter);
-app.use(express.json());
+app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded());
 app.use(cors('*'));
 
