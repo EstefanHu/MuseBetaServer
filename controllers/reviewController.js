@@ -7,13 +7,19 @@ exports.getAllReviews = catchAsync(async (req, res, next) => {
 });
 
 exports.createReview = catchAsync(async (req, res, next) => {
+  console.log('recieved');
+  if (!req.body.user) req.body.user = req.user.id;
+  if (!req.body.modelId) req.body.modelId = req.params.id;
+
+  console.log(req.body);
+
   const newReview = await Review.create(req.body);
+  console.log(newReview)
   res.status(201).json({ status: 'success', payload: newReview });
 });
 
 exports.getReview = catchAsync(async (req, res, next) => {
-  const review = await Review.findById({ id: req.params.id });
-
+  const review = await Review.findById(req.params.id);
   res.status(200).json({ status: 'success', payload: review });
 });
 
