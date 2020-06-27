@@ -10,10 +10,7 @@ exports.createReview = catchAsync(async (req, res, next) => {
   if (!req.body.user) req.body.user = req.user.id;
   if (!req.body.modelId) req.body.modelId = req.params.id;
 
-  console.log(req.body);
-
   const newReview = await Review.create(req.body);
-  console.log(newReview)
   res.status(201).json({ status: 'success', payload: newReview });
 });
 
