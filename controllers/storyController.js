@@ -3,6 +3,7 @@ const Story = require('./../models/storyModel.js');
 const catchAsync = require('./../utils/catchAsync.js');
 const APIFeatures = require('./../utils/apiFeatures.js');
 const AppError = require('../utils/appError.js');
+const factory = require('./../utils/handlerFactory.js');
 
 exports.getPublicLore = async (req, _, next) => {
   req.query.limit = '5';
@@ -59,11 +60,12 @@ exports.updateStory = catchAsync(async (req, res, next) => {
   res.status(200).json({ status: 'success', payload: story });
 });
 
-exports.deleteStory = catchAsync(async (req, res, next) => {
-  const story = await Story.deleteOne({ _id: req.params.id, authorId: req.userId });
-  if (!story) return next(new AppError('No Story found with that ID', 404));
-  res.status(204).json({ status: 'success', payload: null });
-});
+// exports.deleteStory = catchAsync(async (req, res, next) => {
+//   const story = await Story.deleteOne({ _id: req.params.id, authorId: req.userId });
+//   if (!story) return next(new AppError('No Story found with that ID', 404));
+//   res.status(204).json({ status: 'success', payload: null });
+// });
+exports.deleteStory = factory.deleteOne(Story);
 
 exports.getStoryMeta = catchAsync(async (req, res, next) => {
   const meta = await Story.aggregate([

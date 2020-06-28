@@ -1,6 +1,7 @@
 const express = require('express');
 const userController = require('./../controllers/userController.js');
 const authController = require('./../controllers/authController.js');
+const { auth } = require('google-auth-library');
 const router = express.Router();
 
 router.post('/login', authController.login);
@@ -18,6 +19,7 @@ router
 
 router
   .route('/:id')
-  .get(authController.protect, userController.getUser);
+  .get(authController.protect, userController.getUser)
+  .delete(authController.protect, userController.deleteUser);
 
 module.exports = router;
