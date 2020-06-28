@@ -16,8 +16,8 @@ router.patch('/updateMyPassword', authController.updatePassword);
 router.get('/me', userController.getMe, userController.getUser);
 router.patch(
   '/updateMe',
-  userController.uploadUserPhoto,
-  userController.resizeUserPhoto,
+  // userController.uploadUserPhoto,
+  // userController.resizeUserPhoto,
   userController.updateMe
 );
 router.delete('/deleteMe', userController.deleteMe);
@@ -27,8 +27,7 @@ router.use(authController.restrictTo('admin'));
 router
   .route('/')
   .get(userController.getAllUsers)
-  .patch(userController.updateMe)
-  .delete(userController.deleteMe);
+  .post(userController.createUser);
 
 router
   .route('/:id')

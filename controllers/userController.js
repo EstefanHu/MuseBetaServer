@@ -13,8 +13,8 @@ const filterObj = (obj, ...allowedFields) => {
 }
 
 exports.getMe = catchAsync(async (req, res, next) => {
-  const currentUser = await User.findById(req.user._id);
-  res.status(200).json({ status: 'success', payload: currentUser });
+  req.params.id = req.user.id;
+  next();
 });
 
 exports.updateMe = catchAsync(async (req, res, next) => {
@@ -39,8 +39,9 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   res.status(204).json({ status: 'success', payload: null });
 });
 
+// ADMIN ONLY
 exports.getUser = factory.getOne(User);
 exports.getAllUsers = factory.getAll(User);
-// ADMIN ONLY
+exports.createUser = factory.createOne(User);
 exports.updateUser = factory.updateOne(User);
 exports.deleteUser = factory.deleteOne(User);
