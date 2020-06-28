@@ -65,7 +65,7 @@ exports.getOne = (Model, popOptions) =>
     });
   });
 
-exports.getByCommunity = Model =>
+exports.getAll = Model =>
   catchAsync(async (req, res, next) => {
     // To allow for nested GET reviews on Story (hack)
     let filter = {};

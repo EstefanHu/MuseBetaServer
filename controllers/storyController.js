@@ -13,19 +13,8 @@ exports.getPublicLore = async (req, _, next) => {
   next();
 }
 
-exports.getStories = catchAsync(async (req, res, next) => {
-  if (!req.query.community) return next('No community was provided', 400);
-  const features = new APIFeatures(Story.find(), req.query)
-    .filter()
-    .sort()
-    .limitFields()
-    .paginate();
-  const stories = await features.query;
-
-  res.status(200).json({ status: 'success', results: stories.length, payload: stories });
-});
-
 exports.getStory = factory.getOne(Story, { path: 'reviews' });
+exports.getStories = factory.getAll(Story);
 exports.createStory = factory.createOne(Story);
 exports.updateStory = factory.updateOne(Story);
 exports.deleteStory = factory.deleteOne(Story);
