@@ -18,6 +18,7 @@ router
 router
   .route('/:id')
   .get(reviewController.getReview)
+  .patch(authController.protect, reviewController.updateReview)
 //   .patch(
 //     authController.restrictTo('user', 'admin'),
 //     reviewController.updateReview
