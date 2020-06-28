@@ -48,23 +48,7 @@ exports.getStory = catchAsync(async (req, res, next) => {
   res.status(200).json({ status: 'success', payload: story });
 });
 
-exports.updateStory = catchAsync(async (req, res, next) => {
-  let story = await Story.findOneAndUpdate({
-    _id: req.params.id,
-    authorId: req.userId
-  }, req.body, {
-    new: true,
-    runValidators: true
-  });
-  if (!story) return next(new AppError('No Story found with that ID', 404));
-  res.status(200).json({ status: 'success', payload: story });
-});
-
-// exports.deleteStory = catchAsync(async (req, res, next) => {
-//   const story = await Story.deleteOne({ _id: req.params.id, authorId: req.userId });
-//   if (!story) return next(new AppError('No Story found with that ID', 404));
-//   res.status(204).json({ status: 'success', payload: null });
-// });
+exports.updateStory = factory.updateOne(Story);
 exports.deleteStory = factory.deleteOne(Story);
 
 exports.getStoryMeta = catchAsync(async (req, res, next) => {

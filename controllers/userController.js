@@ -44,4 +44,6 @@ exports.getUser = catchAsync(async (req, res, next) => {
   res.status(200).json({ status: 'success', payload: user });
 });
 
+// ADMIN ONLY
+exports.updateUser = factory.updateOne(User);
 exports.deleteUser = factory.deleteOne(User);
