@@ -4,26 +4,25 @@ const authController = require('./../controllers/authController.js');
 const reviewRouter = require('./../routes/reviewRoutes.js')
 const router = express.Router();
 
+router.use('/:modelId/reviews', reviewRouter);
+
 router.route('/public-lore')
   .get(storyController.getPublicLore, storyController.getStories);
 
 router.route('/story-meta').get(storyController.getStoryMeta);
 router.route('/daily_meta/:community').get(storyController.getDailyMeta);
 
+router.use(authController.protect);
+
 router
   .route('/')
-  .get(authController.protect, storyController.getStories)
-  .post(authController.protect, storyController.createStory);
+  .get(storyController.getStories)
+  .post(storyController.createStory);
 
 router
   .route('/:id')
-  .get(authController.protect, storyController.getStory)
-  .patch(authController.protect, storyController.updateStory)
-  .delete(
-    authController.protect,
-    storyController.deleteStory
-  );
-
-router.use('/:modelId/reviews', reviewRouter);
+  .get(storyController.getStory)
+  .patch(storyController.updateStory)
+  .delete(storyController.deleteStory);
 
 module.exports = router;
