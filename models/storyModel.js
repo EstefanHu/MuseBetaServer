@@ -39,6 +39,10 @@ const storySchema = new Schema({
     type: String,
     required: [true, 'Story must have assigned community'],
   },
+  arc: {
+    type: String,
+    required: [true, 'Story must have assigned arc']
+  },
   startLocation: {
     type: {
       type: String,
@@ -107,6 +111,9 @@ const storySchema = new Schema({
   toJSON: { virtuals: true },
   toObject: { virtuals: true }
 });
+
+storySchema.index({ community: 1 });
+storySchema.index({ credibility: -1 });
 
 // virtual populate
 storySchema.virtual('reviews', {
