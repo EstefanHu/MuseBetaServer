@@ -116,7 +116,7 @@ const storySchema = new Schema({
 });
 
 storySchema.index({ community: 1 });
-storySchema.index({ credibility: -1 });
+storySchema.index({ startLocation: '2dsphere' });
 
 // virtual populate
 storySchema.virtual('reviews', {

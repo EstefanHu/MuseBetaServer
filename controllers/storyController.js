@@ -1,6 +1,7 @@
 const Story = require('./../models/storyModel.js');
 const catchAsync = require('./../utils/catchAsync.js');
 const factory = require('./../utils/handlerFactory.js');
+const AppError = require('../utils/appError.js');
 
 exports.getPublicLore = async (req, _, next) => {
   req.query.limit = '5';
@@ -50,4 +51,22 @@ exports.getDailyMeta = catchAsync(async (req, res, next) => {
   ])
 
   res.status(200).json({ status: 'success', payload: { data } })
+});
+
+exports.getStoriesWithin = catchAsync(async (req, res, next) => {
+  const { distance, coordinates, unit } = req.params;
+  const [lng, lat] = coordinates.split(',');
+
+  if (!lng || !lat)
+    next(new AppError('Please provide longitude and latitude in the format lng,lat.', 400));
+
+  const radius = unit === 'mi' ? distance / 3963.2 : distance / 6378.1;
+
+  const stories = await Story.find({
+    startLocation: {
+      $geoWithin: { $centerSphere: [[lng, lat], radius] }
+    }
+  });
+
+  res.status(200).json({ status: 'success', results: stories.length, payload: { data: stories } });
 });
