@@ -101,7 +101,10 @@ const storySchema = new Schema({
   },
   ratingsAverage: {
     type: Number,
-    default: 4.5
+    default: 4.5,
+    min: [1, 'Rating muse be above 1.0'],
+    max: [5, 'Rating must be below 5.0'],
+    set: val => Math.round(val * 10) / 10
   },
   duration: {
     type: Number,
