@@ -1,8 +1,5 @@
-const User = require('./../models/userModel.js');
 const Story = require('./../models/storyModel.js');
 const catchAsync = require('./../utils/catchAsync.js');
-const APIFeatures = require('./../utils/apiFeatures.js');
-const AppError = require('../utils/appError.js');
 const factory = require('./../utils/handlerFactory.js');
 
 exports.getPublicLore = async (req, _, next) => {
