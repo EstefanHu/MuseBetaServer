@@ -25,29 +25,13 @@ exports.getStories = catchAsync(async (req, res, next) => {
   res.status(200).json({ status: 'success', results: stories.length, payload: stories });
 });
 
-exports.createStory = catchAsync(async (req, res, next) => {
-  const { title, pitch, genre, longitude, latitude,
-    community, body, address, description } = req.body;
-  let story = new Story({
-    title, genre, pitch,
-    author: req.user.name,
-    authorId: req.user._id,
-    startingLocation: {
-      coordinates: [longitude, latitude],
-      address, description
-    },
-    community, body
-  });
-  const response = await story.save();
-  res.status(201).json({ status: 'success', payload: response });
-});
-
 exports.getStory = catchAsync(async (req, res, next) => {
   let story = await Story.findById(req.params.id).populate('reviews');
   if (!story) return next(new AppError('No Story found with that ID', 404));
   res.status(200).json({ status: 'success', payload: story });
 });
 
+exports.createStory = factory.createOne(Story);
 exports.updateStory = factory.updateOne(Story);
 exports.deleteStory = factory.deleteOne(Story);
 
