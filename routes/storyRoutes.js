@@ -1,7 +1,7 @@
 const express = require('express');
 const storyController = require('./../controllers/storyController.js');
 const authController = require('./../controllers/authController.js');
-const reviewController = require('./../controllers/reviewController.js');
+const reviewRouter = require('./../routes/reviewRoutes.js')
 const router = express.Router();
 
 router.route('/public-lore')
@@ -24,13 +24,6 @@ router
     storyController.deleteStory
   );
 
-router
-  .route('/:id/reviews')
-  .post(
-    authController.protect,
-    authController.restrictTo('user'),
-    reviewController.createReview
-  )
-
+router.use('/:modelId/reviews', reviewRouter);
 
 module.exports = router;
