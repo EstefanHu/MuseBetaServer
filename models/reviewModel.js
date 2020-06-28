@@ -75,8 +75,6 @@ reviewSchema.statics.calcAverageRatings = async function (modelId, modelName) {
     }
   ]);
 
-  console.log(stats);
-
   let model;
   switch (modelName) {
     case 'Story':
@@ -112,7 +110,7 @@ reviewSchema.pre(/^findOneAnd/, async function (next) {
 });
 
 reviewSchema.post(/^findOneAnd/, async function () {
-  await this.r.constructor.calcAverageRatings(this.r.modelId, this.modelName);
+  await this.r.constructor.calcAverageRatings(this.r.modelId, this.r.modelName);
 });
 
 module.exports = mongoose.model('Review', reviewSchema);
