@@ -40,6 +40,7 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
 });
 
 exports.getUser = factory.getOne(User);
+exports.getAllUsers = factory.getAll(User);
 // ADMIN ONLY
 exports.updateUser = factory.updateOne(User);
 exports.deleteUser = factory.deleteOne(User);
