@@ -39,11 +39,7 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   res.status(204).json({ status: 'success', payload: null });
 });
 
-exports.getUser = catchAsync(async (req, res, next) => {
-  let user = await User.findById(req.params.id);
-  res.status(200).json({ status: 'success', payload: user });
-});
-
+exports.getUser = factory.getOne(User);
 // ADMIN ONLY
 exports.updateUser = factory.updateOne(User);
 exports.deleteUser = factory.deleteOne(User);

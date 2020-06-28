@@ -7,7 +7,7 @@ router.use(authController.protect);
 
 router
   .route('/')
-  .get( reviewController.getAllReviews)
+  .get(reviewController.getAllReviews)
   .post(
     authController.restrictTo('user'),
     reviewController.setStoryUserIds,
@@ -17,7 +17,7 @@ router
 router
   .route('/:id')
   .get(reviewController.getReview)
-  .patch( reviewController.updateReview)
-  .delete( reviewController.deleteReview);
+  .patch(reviewController.updateReview)
+  .delete(reviewController.deleteReview);
 
 module.exports = router;

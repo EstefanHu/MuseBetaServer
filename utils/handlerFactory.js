@@ -65,11 +65,11 @@ exports.getOne = (Model, popOptions) =>
     });
   });
 
-exports.getAll = Model =>
+exports.getByCommunity = Model =>
   catchAsync(async (req, res, next) => {
-    // To allow for nested GET reviews on tour (hack)
+    // To allow for nested GET reviews on Story (hack)
     let filter = {};
-    if (req.params.tourId) filter = { tour: req.params.tourId };
+    if (req.params.modelId) filter = { modelId: req.params.modelId };
 
     const features = new APIFeatures(Model.find(filter), req.query)
       .filter()

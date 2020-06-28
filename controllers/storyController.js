@@ -25,12 +25,7 @@ exports.getStories = catchAsync(async (req, res, next) => {
   res.status(200).json({ status: 'success', results: stories.length, payload: stories });
 });
 
-exports.getStory = catchAsync(async (req, res, next) => {
-  let story = await Story.findById(req.params.id).populate('reviews');
-  if (!story) return next(new AppError('No Story found with that ID', 404));
-  res.status(200).json({ status: 'success', payload: story });
-});
-
+exports.getStory = factory.getOne(Story, { path: 'reviews' });
 exports.createStory = factory.createOne(Story);
 exports.updateStory = factory.updateOne(Story);
 exports.deleteStory = factory.deleteOne(Story);
