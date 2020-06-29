@@ -26,7 +26,7 @@ exports.uploadStoryImages = upload.fields([
 exports.resizeStoryImages = (req, res, next) => {
   console.log(req.files);
   next();
-}
+};
 
 exports.getPublicLore = async (req, _, next) => {
   req.query.limit = '5';
