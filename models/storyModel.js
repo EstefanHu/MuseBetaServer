@@ -39,9 +39,9 @@ const storySchema = new Schema({
     type: String,
     required: [true, 'Story must have assigned community.'],
   },
-  scene: {
+  city: {
     type: String,
-    required: [true, 'Story must have assigned scene.']
+    required: [true, 'Story must have assigned city.']
   },
   startLocation: {
     type: {
