@@ -19,6 +19,10 @@ router
   .get(storyController.getStoriesWithin);
 
 router
+  .route('/distances/:coordinates/unit/:unit')
+  .get(storyController.getDistances);
+
+router
   .route('/')
   .get(storyController.getStories)
   .post(storyController.createStory);

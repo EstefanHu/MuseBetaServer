@@ -136,6 +136,10 @@ storySchema.pre('save', function (next) {
   next();
 });
 
+// storySchema.pre('aggregate', function(next){
+//   this.pipeline().unshift({$match:{secretStory: {$ne:true}}});
 
+//   next();
+// })
 
 module.exports = mongoose.model('Story', storySchema);
