@@ -30,7 +30,11 @@ router
 router
   .route('/:id')
   .get(storyController.getStory)
-  .patch(storyController.updateStory)
+  .patch(
+    storyController.uploadStoryImages,
+    storyController.resizeStoryImages,
+    storyController.updateStory,
+  )
   .delete(storyController.deleteStory);
 
 module.exports = router;

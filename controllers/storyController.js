@@ -1,7 +1,32 @@
 const Story = require('./../models/storyModel.js');
+const multer = require('multer');
+const sharp = require('sharp');
 const catchAsync = require('./../utils/catchAsync.js');
 const factory = require('./../utils/handlerFactory.js');
 const AppError = require('../utils/appError.js');
+
+const multerStorage = multer.memoryStorage();
+
+const multerFilter = (req, file, callback) => {
+  file.mimetype.startsWith('image') ?
+    callback(null, true)
+    : callback(new AppError('Not an image. Please upload only images.', 400), false);
+}
+
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter
+});
+
+exports.uploadStoryImages = upload.fields([
+  { name: 'imageCover', maxCount: 1 },
+  { name: 'images', maxCount: 3 }
+]);
+
+exports.resizeStoryImages = (req, res, next) => {
+  console.log(req.files);
+  next();
+}
 
 exports.getPublicLore = async (req, _, next) => {
   req.query.limit = '5';
@@ -9,7 +34,7 @@ exports.getPublicLore = async (req, _, next) => {
   req.query.status = 'lore';
   req.query.fields = 'title,genre,pitch,body,longitude,latitude';
   next();
-}
+};
 
 exports.getStory = factory.getOne(Story, { path: 'reviews' });
 exports.getStories = factory.getAll(Story);

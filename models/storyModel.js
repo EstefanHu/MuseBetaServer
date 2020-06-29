@@ -37,11 +37,11 @@ const storySchema = new Schema({
   },
   community: {
     type: String,
-    required: [true, 'Story must have assigned community'],
+    required: [true, 'Story must have assigned community.'],
   },
-  arc: {
+  scene: {
     type: String,
-    required: [true, 'Story must have assigned arc']
+    required: [true, 'Story must have assigned scene.']
   },
   startLocation: {
     type: {
@@ -83,6 +83,7 @@ const storySchema = new Schema({
     type: String,
     default: 'placeholder'
   },
+  images: [String],
   type: {
     type: String,
     default: 'Text'
