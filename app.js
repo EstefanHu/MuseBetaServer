@@ -10,6 +10,7 @@ const globalErrorHandler = require('./controllers/errorController.js');
 const app = express();
 
 // MIDDLEWARE
+app.use(cors());
 app.use(helmet());
 const limiter = rateLimit({
   max: 100,
@@ -19,7 +20,6 @@ const limiter = rateLimit({
 app.use('/api', limiter);
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true }));
-app.use(cors('*'));
 app.use(mongoSanitize());
 app.use(xss());
 app.use(hpp({
