@@ -16,14 +16,16 @@ const storySchema = new Schema({
       values: [
         'Fiction',
         'Poetry',
+        'Narrative',
+        'YA',
         'Non-Fiction',
         'Speculative',
-        'YA',
-        'Religion',
+        'Article',
         'Sci-Fi',
         'Fantasy',
+        'Mystery',
         'Essay',
-        'Article'
+        'Religion',
       ],
       message: 'Genre is not supported'
     }
