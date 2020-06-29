@@ -21,7 +21,7 @@ const multerFilter = (req, file, callback) => {
   file.mimetype.startsWith('image') ?
     callback(null, true)
     : callback(new AppError('Not an image. Please upload only images.', 400), false);
-}
+};
 
 const upload = multer({
   storage: multerStorage,

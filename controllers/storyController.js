@@ -11,7 +11,7 @@ const multerFilter = (req, file, callback) => {
   file.mimetype.startsWith('image') ?
     callback(null, true)
     : callback(new AppError('Not an image. Please upload only images.', 400), false);
-}
+};
 
 const upload = multer({
   storage: multerStorage,
@@ -23,10 +23,18 @@ exports.uploadStoryImages = upload.fields([
   { name: 'images', maxCount: 3 }
 ]);
 
-exports.resizeStoryImages = (req, res, next) => {
-  console.log(req.files);
+exports.resizeStoryImages = catchAsync(async (req, res, next) => {
+  if (!req.files.imageCover || !req.files.images) return next();
+
+  req.body.imageCover = `story-${req.params.id}-${Date.now()}-cover.jpeg`
+  await sharp(req.files.imageCover[0].buffer)
+    .resize(2000, 1333)
+    .toFormat('jpeg')
+    .jpeg({ quality: 90 })
+    .toFile(`public/img/stories/${req.body.imageCover}`);
+
   next();
-};
+});
 
 exports.getPublicLore = async (req, _, next) => {
   req.query.limit = '5';
