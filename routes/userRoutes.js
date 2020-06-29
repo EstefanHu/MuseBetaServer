@@ -1,6 +1,7 @@
 const express = require('express');
 const userController = require('./../controllers/userController.js');
 const authController = require('./../controllers/authController.js');
+
 const router = express.Router();
 
 router.post('/login', authController.login);
@@ -15,7 +16,7 @@ router.patch('/updateMyPassword', authController.updatePassword);
 router.get('/me', userController.getMe, userController.getUser);
 router.patch(
   '/updateMe',
-  // userController.uploadUserPhoto,
+  userController.uploadUserPhoto,
   // userController.resizeUserPhoto,
   userController.updateMe
 );
