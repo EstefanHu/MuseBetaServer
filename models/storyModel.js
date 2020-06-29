@@ -73,6 +73,10 @@ const storySchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
+  authorName: {
+    type: String,
+    required: true
+  },
   createdAt: {
     type: Date,
     default: Date.now(),
@@ -130,12 +134,11 @@ storySchema.virtual('reviews', {
 
 // Document middleware
 storySchema.pre('save', function (next) {
-  this.slug =
-    slugify(this.author + ' ' + this.title, {
-      remove: /[*+~.()'"!:@]/g,
-      lower: true,
-      strict: true,
-    });
+  this.slug = slugify(this.title, {
+    remove: /[*+~.()'"!:@]/g,
+    lower: true,
+    strict: true,
+  });
   next();
 });
 
