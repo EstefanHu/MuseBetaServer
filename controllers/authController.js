@@ -33,6 +33,9 @@ const createSendToken = (user, statusCode, res) => {
 };
 
 exports.register = catchAsync(async (req, res, next) => {
+  const checkEmail = await User.findOne({ email: req.body.email });
+  if (checkEmail) return res.status(422).json({ status: 'failure', payload: 'Email already registered' });
+
   let newUser = await User.create({
     name: req.body.name,
     email: req.body.email,

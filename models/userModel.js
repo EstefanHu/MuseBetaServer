@@ -86,6 +86,8 @@ const userSchema = new Schema({
   toObject: { virtuals: true }
 });
 
+userSchema.index({ email: 1, unique: true });
+
 // https://www.mongodb.com/blog/post/password-authentication-with-mongoose-part-1
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
