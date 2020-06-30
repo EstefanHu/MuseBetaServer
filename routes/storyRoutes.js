@@ -25,7 +25,7 @@ router
 router
   .route('/')
   .get(storyController.getStories)
-  .post(storyController.createStory);
+  .post(storyController.setUserId, storyController.createStory);
 
 router
   .route('/:id')

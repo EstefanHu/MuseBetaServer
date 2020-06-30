@@ -50,6 +50,12 @@ exports.resizeStoryImages = catchAsync(async (req, res, next) => {
   next();
 });
 
+exports.setUserId = (req, res, next) => {
+  if (!req.body.authorId) req.body.authorId = req.user.id;
+  if (!req.body.authorName) req.body.authorName = req.user.name;
+  next();
+}
+
 exports.getPublicLore = async (req, _, next) => {
   req.query.limit = '5';
   req.query.sort = 'credibilty';
