@@ -15,6 +15,10 @@ router.route('/daily_meta/:community').get(storyController.getDailyMeta);
 router.use(authController.protect);
 
 router
+  .route('/library')
+  .get(storyController.getLibrary);
+
+router
   .route('/story-within/:distance/center/:coordinates/unit/:unit')
   .get(storyController.getStoriesWithin);
 

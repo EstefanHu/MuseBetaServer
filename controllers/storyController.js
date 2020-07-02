@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Story = require('./../models/storyModel.js');
 const multer = require('multer');
 const sharp = require('sharp');
@@ -104,6 +105,20 @@ exports.getDailyMeta = catchAsync(async (req, res, next) => {
   ])
 
   res.status(200).json({ status: 'success', payload: { data } })
+});
+
+exports.getLibrary = catchAsync(async (req, res, next) => {
+  const library = await Story.find({
+    '_id': {
+      $in: [
+        req.user.library.map(
+          item => mongoose.Types.ObjectId(item)
+        )
+      ]
+    }
+  });
+
+  res.status(200).json({ type: 'success', payload: library });
 });
 
 exports.getStoriesWithin = catchAsync(async (req, res, next) => {
