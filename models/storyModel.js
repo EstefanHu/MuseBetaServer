@@ -9,9 +9,9 @@ const storySchema = new Schema({
     required: [true, 'Story must have a title'],
     default: ''
   },
-  genre: {
+  channel: {
     type: String,
-    required: [true, 'Story must have a genre'],
+    required: [true, 'Story must have a channel'],
     enum: {
       values: [
         'Fiction',
@@ -27,7 +27,7 @@ const storySchema = new Schema({
         'Essay',
         'Religion',
       ],
-      message: 'Genre is not supported'
+      message: 'Channel is not supported'
     }
   },
   pitch: {

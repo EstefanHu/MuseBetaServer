@@ -78,24 +78,31 @@ exports.addStoryToLibrary = catchAsync(async (req, res, next) => {
   const isStorySaved = req.user.library.includes(req.body.id);
   if (isStorySaved) return next(new AppError('Story is already in Library', 400));
 
-  await User.findByIdAndUpdate(req.user._id, {
+  const user = await User.findByIdAndUpdate(req.user._id, {
     library: [
       ...req.user.library,
       req.body.id
     ]
+  }, {
+    new: true,
+    runValidators: true
   });
 
-  res.status(200).json({ status: 'success', payload: req.body.id });
+  res.status(200).json({ status: 'success', payload: user.library });
 });
 
 exports.removeStoryFromLibrary = catchAsync(async (req, res, next) => {
-  await User.findByIdAndUpdate(req.user.id, {
+  const user = await User.findByIdAndUpdate(req.user.id, {
     library: [
       ...req.user.library.filter(
         storyId => storyId === req.body.id)
     ]
+  }, {
+    new: true,
+    runValidators: true
   });
-  res.status(201).json({ status: 'success', payload: req.body.id });
+
+  res.status(201).json({ status: 'success', payload: user.library });
 });
 
 // ADMIN ONLY
