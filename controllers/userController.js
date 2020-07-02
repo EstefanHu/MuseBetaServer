@@ -73,14 +73,19 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
 });
 
 exports.addStoryToLibrary = catchAsync(async (req, res, next) => {
-  const status = await Story.exists({ _id: req.body.id });
-  if (status) await User.findByIdAndUpdate(req.user._id, {
-    library: [
-      ...req.user.library,
-      req.body.id
-    ]
+  const doesStoryExist = await Story.exists({ _id: req.body.id });
+  const isStorySaved = req.user.library.includes(req.body.id);
+  if (doesStoryExist && !isStorySaved)
+    await User.findByIdAndUpdate(req.user._id, {
+      library: [
+        ...req.user.library,
+        req.body.id
+      ]
+    });
+  res.status(200).json({
+    status: 'success',
+    paylaod: doesStoryExist && !isStorySaved
   });
-  res.status(200).json({ status: 'success', paylaod: status });
 });
 
 // ADMIN ONLY
