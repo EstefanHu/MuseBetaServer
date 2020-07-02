@@ -74,25 +74,28 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
 
 exports.addStoryToLibrary = catchAsync(async (req, res, next) => {
   const doesStoryExist = await Story.exists({ _id: req.body.id });
+  if (!doesStoryExist) return next(new AppError('Story does not Exist', 400));
   const isStorySaved = req.user.library.includes(req.body.id);
-  if (doesStoryExist && !isStorySaved)
-    await User.findByIdAndUpdate(req.user._id, {
-      library: [
-        ...req.user.library,
-        req.body.id
-      ]
-    });
-  res.status(200).json({
-    status: 'success',
-    payload: doesStoryExist && !isStorySaved
+  if (isStorySaved) return next(new AppError('Story is already in Library', 400));
+
+  await User.findByIdAndUpdate(req.user._id, {
+    library: [
+      ...req.user.library,
+      req.body.id
+    ]
   });
+
+  res.status(200).json({ status: 'success', payload: req.body.id });
 });
 
 exports.removeStoryFromLibrary = catchAsync(async (req, res, next) => {
   await User.findByIdAndUpdate(req.user.id, {
-    library: [...req.user.library.filter(storyId => storyId === req.body.id)]
+    library: [
+      ...req.user.library.filter(
+        storyId => storyId === req.body.id)
+    ]
   });
-  res.status(201).json({ status: 'success', payload: null });
+  res.status(201).json({ status: 'success', payload: req.body.id });
 });
 
 // ADMIN ONLY
