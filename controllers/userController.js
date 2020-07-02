@@ -84,8 +84,15 @@ exports.addStoryToLibrary = catchAsync(async (req, res, next) => {
     });
   res.status(200).json({
     status: 'success',
-    paylaod: doesStoryExist && !isStorySaved
+    payload: doesStoryExist && !isStorySaved
   });
+});
+
+exports.removeStoryFromLibrary = catchAsync(async (req, res, next) => {
+  await User.findByIdAndUpdate(req.user.id, {
+    library: [...req.user.library.filter(storyId => storyId === req.body.id)]
+  });
+  res.status(201).json({ status: 'success', payload: null });
 });
 
 // ADMIN ONLY
