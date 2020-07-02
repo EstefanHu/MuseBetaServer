@@ -1,19 +1,10 @@
 const multer = require('multer');
 const sharp = require('sharp');
 const catchAsync = require('./../utils/catchAsync.js');
-const User = require('../models/userModel.js');
+const User = require('./../models/userModel.js');
+const Story = require('./../models/storyModel.js');
 const AppError = require('./../utils/appError.js');
 const factory = require('./../utils/handlerFactory.js');
-
-// const multerStorage = multer.diskStorage({
-//   destination: (req, file, callback) => {
-//     callback(null, 'public/img/users');
-//   },
-//   filename: (req, file, callback) => {
-//     const ext = file.mimetype.split('/')[1];
-//     callback(null, `user-${req.user.id}-${Date.now()}.${ext}`)
-//   }
-// });
 
 const multerStorage = multer.memoryStorage();
 
@@ -79,6 +70,17 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 exports.deleteMe = catchAsync(async (req, res, next) => {
   await User.findByIdAndUpdate(req.user._id, { active: false });
   res.status(204).json({ status: 'success', payload: null });
+});
+
+exports.addStoryToLibrary = catchAsync(async (req, res, next) => {
+  const status = await Story.exists({ _id: req.body.id });
+  if (status) await User.findByIdAndUpdate(req.user._id, {
+    library: [
+      ...req.user.library,
+      req.body.id
+    ]
+  });
+  res.status(200).json({ status: 'success', paylaod: status });
 });
 
 // ADMIN ONLY
