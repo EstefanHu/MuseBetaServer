@@ -108,6 +108,7 @@ exports.getDailyMeta = catchAsync(async (req, res, next) => {
 });
 
 exports.getLibrary = catchAsync(async (req, res, next) => {
+  console.log('library')
   const library = await Story.find({
     '_id': {
       $in: [
@@ -118,7 +119,7 @@ exports.getLibrary = catchAsync(async (req, res, next) => {
     }
   });
 
-  res.status(200).json({ type: 'success', payload: library });
+  res.status(200).json({ status: 'success', payload: library });
 });
 
 exports.getStoriesWithin = catchAsync(async (req, res, next) => {

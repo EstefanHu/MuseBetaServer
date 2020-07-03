@@ -12,7 +12,7 @@ exports.deleteOne = Model =>
 
     res.status(204).json({
       status: 'success',
-      data: null
+      payload: null
     });
   });
 
@@ -29,9 +29,7 @@ exports.updateOne = Model =>
 
     res.status(200).json({
       status: 'success',
-      data: {
-        data: doc
-      }
+      payload: doc
     });
   });
 
@@ -41,9 +39,7 @@ exports.createOne = Model =>
 
     res.status(201).json({
       status: 'success',
-      data: {
-        data: doc
-      }
+      payload: doc
     });
   });
 
@@ -59,9 +55,7 @@ exports.getOne = (Model, popOptions) =>
 
     res.status(200).json({
       status: 'success',
-      data: {
-        data: doc
-      }
+      payload: doc
     });
   });
 
@@ -83,8 +77,6 @@ exports.getAll = Model =>
     res.status(200).json({
       status: 'success',
       results: doc.length,
-      payload: {
-        data: doc
-      }
+      payload: doc
     });
   });
