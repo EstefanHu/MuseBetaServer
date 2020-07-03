@@ -108,14 +108,11 @@ exports.getDailyMeta = catchAsync(async (req, res, next) => {
 });
 
 exports.getLibrary = catchAsync(async (req, res, next) => {
-  console.log('library')
   const library = await Story.find({
     '_id': {
-      $in: [
-        req.user.library.map(
-          item => mongoose.Types.ObjectId(item)
-        )
-      ]
+      $in: req.user.library.map(id => {
+        return mongoose.Types.ObjectId(id);
+      })
     }
   });
 
