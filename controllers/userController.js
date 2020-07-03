@@ -5,6 +5,7 @@ const User = require('./../models/userModel.js');
 const Story = require('./../models/storyModel.js');
 const AppError = require('./../utils/appError.js');
 const factory = require('./../utils/handlerFactory.js');
+const mongoose = require('mongoose');
 
 const multerStorage = multer.memoryStorage();
 
@@ -88,11 +89,13 @@ exports.addStoryToLibrary = catchAsync(async (req, res, next) => {
 });
 
 exports.removeStoryFromLibrary = catchAsync(async (req, res, next) => {
+  console.log(req.body.id);
+  console.log(req.user.library);
   await User.findByIdAndUpdate(req.user.id, {
-    library: [
-      ...req.user.library.filter(
-        storyId => storyId === req.body.id)
-    ]
+    library:
+      req.user.library.filter(
+        storyId => storyId != req.body.id
+      )
   });
 
   res.status(201).json({ status: 'success', payload: req.body.id });
