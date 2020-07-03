@@ -89,8 +89,6 @@ exports.addStoryToLibrary = catchAsync(async (req, res, next) => {
 });
 
 exports.removeStoryFromLibrary = catchAsync(async (req, res, next) => {
-  console.log(req.body.id);
-  console.log(req.user.library);
   await User.findByIdAndUpdate(req.user.id, {
     library:
       req.user.library.filter(
