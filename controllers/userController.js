@@ -98,11 +98,6 @@ exports.removeStoryFromLibrary = catchAsync(async (req, res, next) => {
   res.status(201).json({ status: 'success', payload: req.body.id });
 });
 
-exports.getStories = catchAsync(async (req, res, next) => {
-  const stories = await Story.find({ authorId: req.params.id });
-  res.status(200).json({ status: 'success', payload: stories });
-});
-
 // ADMIN ONLY
 exports.getUser = factory.getOne(User);
 exports.getAllUsers = factory.getAll(User);
