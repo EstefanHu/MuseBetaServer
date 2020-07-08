@@ -5,7 +5,6 @@ const User = require('./../models/userModel.js');
 const Story = require('./../models/storyModel.js');
 const AppError = require('./../utils/appError.js');
 const factory = require('./../utils/handlerFactory.js');
-const mongoose = require('mongoose');
 
 const multerStorage = multer.memoryStorage();
 
@@ -97,6 +96,11 @@ exports.removeStoryFromLibrary = catchAsync(async (req, res, next) => {
   });
 
   res.status(201).json({ status: 'success', payload: req.body.id });
+});
+
+exports.getStories = catchAsync(async (req, res, next) => {
+  const stories = await Story.find({ authorId: req.params.id });
+  res.status(200).json({ status: 'success', payload: stories });
 });
 
 // ADMIN ONLY

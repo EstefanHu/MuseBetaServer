@@ -17,6 +17,7 @@ router.patch('/removeStoryFromLibrary', userController.removeStoryFromLibrary);
 
 router.patch('/updateMyPassword', authController.updatePassword);
 router.get('/me', userController.getMe, userController.getUser);
+router.get('/myStories', userController.getMe, userController.getStories);
 router.patch(
   '/updateMe',
   userController.uploadUserPhoto,
