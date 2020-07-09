@@ -25,9 +25,8 @@ app.use(xss());
 app.use(hpp({
   whitelist: [] // eventually add whitelist
 }));
-app.get(('/'), (req, res) => {
-  res.json({ status: 'success', payload: 'Hello World' });
-})
+
+app.use('/api/static', express.static('public'));
 
 // ROUTES
 app.use('/api/v1/config', require('./routes/configRoutes'));
@@ -36,6 +35,7 @@ app.use('/api/v1/story', require('./routes/storyRoutes'));
 app.use('/api/v1/review', require('./routes/reviewRoutes'));
 // app.use('/api/v1/monument', require('./routes/monumentRoute'));
 // app.use('/api/v1/chapter', require('./routes/chapterRoutes'));
+
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl}`));
