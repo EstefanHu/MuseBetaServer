@@ -21,8 +21,7 @@ const userSchema = new Schema({
     validate: [validator.isEmail, 'Please provide valid email.']
   },
   photo: {
-    type: String,
-    default: 'default.jpeg'
+    type: String
   },
   role: {
     type: String,
