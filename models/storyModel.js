@@ -6,6 +6,7 @@ const storySchema = new Schema({
   title: {
     type: String,
     trim: true,
+    maxlength: [50, 'Title must be less than 50 characters'],
     required: [true, 'Story must have a title'],
     default: ''
   },
@@ -35,7 +36,7 @@ const storySchema = new Schema({
     trim: true,
     required: true,
     default: '',
-    maxlength: [140, 'Pitch must be less or equal to 140 characters.'],
+    maxlength: [280, 'Pitch must be less or equal to 280 characters.'],
   },
   community: {
     type: String,

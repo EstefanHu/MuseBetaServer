@@ -165,3 +165,32 @@ exports.getDistances = catchAsync(async (req, res, next) => {
 
   res.status(200).json({ status: 'success', payload: distances });
 });
+
+exports.getStoryDistanceFromUser = catchAsync(async (req, res, next) => {
+  const { id, coordinates, unit } = req.params;
+  const [lng, lat] = coordinates.split(',');
+
+  if (!lng || !lat)
+    next(new AppError('Please provide longitude and latitude in the format lng,lat.', 400));
+
+  const distance = await Story.aggregate([
+    {
+      $geoNear: {
+        near: {
+          type: 'Point',
+          coordinates: [+lng, +lat]
+        },
+        distanceField: 'distance',
+        distanceMultiplier: unit === 'mi' ? 0.000621371 : 0.0001
+      }
+    },
+    {
+      $project: {
+        distance: 1,
+        title: 1
+      }
+    }
+  ]);
+
+  res.status(200).json({ status: 'success', payload: distance });
+});

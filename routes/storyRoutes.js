@@ -27,6 +27,10 @@ router
   .get(storyController.getDistances);
 
 router
+  .route('/:id/distance/:coordinates/unit/:unit')
+  .get(storyController.getStoryDistanceFromUser);
+
+router
   .route('/')
   .get(storyController.getStories)
   .post(storyController.setUserId, storyController.createStory);
