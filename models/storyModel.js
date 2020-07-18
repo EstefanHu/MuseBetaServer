@@ -40,7 +40,6 @@ const storySchema = new Schema({
   },
   community: {
     type: String,
-    required: [true, 'Story must have assigned community.'],
   },
   city: {
     type: String,
