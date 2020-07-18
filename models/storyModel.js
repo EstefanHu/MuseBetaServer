@@ -22,7 +22,7 @@ const storySchema = new Schema({
         'Non-Fiction',
         'Speculative',
         'Article',
-        'Sci-Fi',
+        'SciFi',
         'Fantasy',
         'Mystery',
         'Essay',
@@ -45,6 +45,9 @@ const storySchema = new Schema({
   city: {
     type: String,
     required: [true, 'Story must have assigned city.']
+  },
+  zip: {
+    type: Number,
   },
   startLocation: {
     type: {
