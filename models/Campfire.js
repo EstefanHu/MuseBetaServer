@@ -18,13 +18,24 @@ const campfireSchema = new Schema({
     trim: true,
     required: true
   },
-  stories: {
-    type: [String] //Will be Story instance
-  },
+  stories: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Story'
+  }],
   multiplyer: {
     type: Number,
   },
   slug: String,
+}, {
+  timestamps: true,
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
+});
+
+campfireSchema.virtualI('stories', {
+  ref: 'Story',
+  foreignField: 'campfireId',
+  localField: '_id'
 });
 
 campfireSchema.pre('save', function (next) {

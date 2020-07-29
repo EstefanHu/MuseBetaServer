@@ -39,7 +39,7 @@ const userSchema = new Schema({
   },
   bio: {
     type: String,
-    maxlength: 280,
+    maxlength: 500,
   },
   links: [String],
   library: [{

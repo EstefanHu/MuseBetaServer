@@ -12,12 +12,12 @@ const app = express();
 // MIDDLEWARE
 app.use(cors());
 app.use(helmet());
-const limiter = rateLimit({
-  max: 100,
-  windowMs: 60 * 60 * 1000,
-  message: 'Too many requests from this IP, try again in one hour.'
-});
-app.use('/api', limiter);
+// const limiter = rateLimit({
+//   max: 100,
+//   windowMs: 60 * 60 * 1000,
+//   message: 'Too many requests from this IP, try again in one hour.'
+// });
+// app.use('/api', limiter);
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(mongoSanitize());

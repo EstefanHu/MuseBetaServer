@@ -85,12 +85,15 @@ const storySchema = new Schema({
     default: Date.now(),
     required: true,
   },
+  campfireId: {
+    type: Schema.Types.ObjectId,
+    required: false,
+  },
   slug: {
     type: String
   },
   imageCover: {
     type: String,
-    default: 'placeholder'
   },
   images: [String],
   type: {
