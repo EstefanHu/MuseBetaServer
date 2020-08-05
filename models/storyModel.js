@@ -17,16 +17,10 @@ const storySchema = new Schema({
       values: [
         'Fiction',
         'Poetry',
-        'Narrative',
-        'YA',
-        'Non-Fiction',
-        'Speculative',
         'Article',
-        'SciFi',
-        'Fantasy',
-        'Mystery',
-        'Essay',
-        'Religion',
+        'Education',
+        'Politics',
+        'Spiritual',
       ],
       message: 'Channel is not supported'
     }
