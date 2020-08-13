@@ -12,7 +12,9 @@ dotenv.config();
 
 // MONGO CONNECTION
 const DB_CONNECTION = process.env.APP_DB || 'DUMMY_DATA';
-mongoose.connect(`mongodb://localhost/${DB_CONNECTION}`,
+mongoose.connect(process.env.NODE_ENV === 'production' ?
+  `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@ds139884.mlab.com:39884/heroku_f4j7j018`
+  : `mongodb://localhost/${DB_CONNECTION}`,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
